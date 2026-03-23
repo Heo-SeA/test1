@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>페이지 빌더</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f4f4f2;color:#222;font-size:14px;}
+h1{font-size:18px;font-weight:700;color:#1a1a2e;padding:20px 24px 0;}
+.sub-h{font-size:12px;color:#888;padding:4px 24px 16px;}
+.wrap{display:flex;gap:14px;padding:0 24px 24px;min-height:calc(100vh - 80px);}
+.left{width:280px;flex-shrink:0;display:flex;flex-direction:column;gap:8px;}
+.right{flex:1;display:flex;flex-direction:column;}
+.panel{background:#fff;border:1px solid #e8e8e6;border-radius:10px;padding:1rem 1.1rem;}
+.sec-label{font-size:11px;font-weight:600;color:#888;letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;}
+.group{margin-bottom:10px;}
+.item{border:1px solid #e8e8e6;border-radius:8px;overflow:hidden;margin-bottom:5px;transition:border-color .15s;}
+.item:hover{border-color:#bbb;}
+.item-hd{display:flex;align-items:center;gap:8px;padding:8px 10px;background:#fafafa;cursor:default;}
+.item-hd input{width:14px;height:14px;cursor:pointer;flex-shrink:0;accent-color:#1a1a2e;}
+.lbl-wrap{flex:1;cursor:pointer;}
+.lbl{font-size:13px;font-weight:500;color:#222;display:block;}
+.desc{font-size:11px;color:#999;}
+.arr{font-size:16px;color:#bbb;cursor:pointer;user-select:none;flex-shrink:0;line-height:1;transition:transform .18s;}
+.arr.open{transform:rotate(180deg);}
+.sub{padding:8px 10px;display:none;flex-direction:column;gap:5px;border-top:1px solid #f0f0f0;background:#fff;}
+.sub.open{display:flex;}
+.st{font-size:11px;font-weight:600;color:#aaa;margin-top:4px;}
+.st:first-child{margin-top:0;}
+.opt{display:flex;align-items:center;gap:6px;font-size:12px;color:#555;}
+.opt input{width:13px;height:13px;accent-color:#1a1a2e;}
+.btn-done{background:#1a1a2e;color:#fff;border:none;border-radius:8px;padding:11px;font-size:13px;font-weight:600;cursor:pointer;width:100%;margin-top:10px;letter-spacing:.02em;}
+.btn-done:hover{background:#2a2a4e;}
+.preview-label{font-size:13px;font-weight:600;color:#666;margin-bottom:10px;}
+.pf{flex:1;border:1px solid #e8e8e6;border-radius:8px;overflow:hidden;background:#fff;min-height:500px;}
+.pf iframe{width:100%;height:100%;border:none;min-height:500px;}
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:300px;color:#bbb;font-size:13px;gap:8px;}
+.empty-icon{font-size:32px;}
+.sl{overflow-y:auto;max-height:calc(100vh - 160px);padding-right:2px;}
+.sl::-webkit-scrollbar{width:4px;}
+.sl::-webkit-scrollbar-track{background:transparent;}
+.sl::-webkit-scrollbar-thumb{background:#ddd;border-radius:2px;}
+</style>
+</head>
+<body>
+
+<h1>페이지 빌더</h1>
+<p class="sub-h">구성 요소를 선택하고 [완료]를 눌러 미리보기를 확인하세요.</p>
+
+<div class="wrap">
+<div class="left">
+<div class="panel sl" style="flex:1;">
+
+<div class="group">
+<div class="sec-label">네비게이션</div>
+<div class="item">
+<div class="item-hd">
+<input type="checkbox" id="c-hd">
+<div class="lbl-wrap" onclick="tc('hd')"><span class="lbl">헤더 네비게이션</span></div>
+<span class="arr" id="a-hd" onclick="ts('hd')">&#8964;</span>
+</div>
+<div class="sub" id="s-hd">
+<div class="st">메뉴 depth</div>
+<label class="opt"><input type="radio" name="hd-d" value="1" checked> 1depth</label>
+<label class="opt"><input type="radio" name="hd-d" value="2"> 2depth (드롭다운)</label>
+<div class="st">포함 요소</div>
+<label class="opt"><input type="checkbox" id="c-hd-logo" checked> 로고</label>
+<label class="opt"><input type="checkbox" id="c-hd-login"> 로그인 버튼</label>
+<label class="opt"><input type="checkbox" id="c-hd-srch"> 검색 아이콘</label>
+</div>
+</div>
+</div>
+
+<div class="group">
+<div class="sec-label">서브 레이아웃</div>
+<div class="item">
+<div class="item-hd">
+<input type="checkbox" id="c-sv">
+<div class="lbl-wrap" onclick="tc('sv')"><span class="lbl">상단 이미지 영역</span></div>
+<span class="arr" id="a-sv" onclick="ts('sv')">&#8964;</span>
+</div>
+<div class="sub" id="s-sv">
+<label class="opt"><input type="radio" name="sv" value="img" checked> 이미지 有</label>
+<label class="opt"><input type="radio" name="sv" value="txt"> 이미지 無</label>
+</div>
+</div>
+<div class="item">
+<div class="item-hd">
+<input type="checkbox" id="c-lnb">
+<div class="lbl-wrap" onclick="tc('lnb')"><span class="lbl">LNB 네비게이션</span></div>
+<span class="arr" id="a-lnb" onclick="ts('lnb')">&#8964;</span>
+</div>
+<div class="sub" id="s-lnb">
+<label class="opt"><input type="radio" name="lnb" value="left" checked> 좌측 LNB</label>
+<label class="opt"><input type="radio" name="lnb" value="right"> 우측 LNB</label>
+<label class="opt"><input type="radio" name="lnb" value="tab"> 상단 탭형</label>
+</div>
+</div>
+</div>
+
+<div class="group">
+<div class="sec-label">검색</div>
+<div class="item">
+<div class="item-hd">
+<input type="checkbox" id="c-s">
+<div class="lbl-wrap" onclick="tc('s')"><span class="lbl">검색 영역</span></div>
+<span class="arr" id="a-s" onclick="ts('s')">&#8964;</span>
+</div>
+<div class="sub" id="s-s">
+<label class="opt"><input type="checkbox" id="c-s-box" checked> 검색어 입력박스</label>
+<label class="opt"><input type="checkbox" id="c-s-type"> 기본 셀렉트 (제목/내용)</label>
+<label class="opt"><input type="checkbox" id="c-s-region"> 지역 셀렉트</label>
+<label class="opt"><input type="checkbox" id="c-s-date"> 날짜 셀렉트</label>
+<label class="opt"><input type="checkbox" id="c-s-cat"> 카테고리 셀렉트</label>
+</div>
+</div>
+</div>
+
+<div class="group">
+<div class="sec-label">게시판 유형 (1개 선택)</div>
+<div class="item">
+<div class="item-hd">
+<input type="radio" name="bt" value="notice" id="br-notice" onchange="obc()">
+<div class="lbl-wrap" onclick="sb('notice')"><span class="lbl">공지형</span><span class="desc">번호·제목·날짜 텍스트 리스트</span></div>
+<span class="arr" id="a-b-notice" onclick="ts('b-notice')">&#8964;</span>
+</div>
+<div class="sub" id="s-b-notice">
+<div class="st">컬럼 옵션</div>
+<label class="opt"><input type="checkbox" id="c-bn-cat"> 카테고리 컬럼</label>
+<label class="opt"><input type="checkbox" id="c-bn-thumb"> 썸네일 이미지</label>
+<label class="opt"><input type="checkbox" id="c-bn-attach"> 첨부파일 아이콘</label>
+<label class="opt"><input type="checkbox" id="c-bn-writer"> 작성자 컬럼</label>
+<label class="opt"><input type="checkbox" id="c-bn-badge"> NEW 뱃지</label>
+<label class="opt"><input type="checkbox" id="c-bn-pager" checked> 페이지네이션</label>
+</div>
+</div>
+<div class="item">
+<div class="item-hd">
+<input type="radio" name="bt" value="photo" id="br-photo" onchange="obc()">
+<div class="lbl-wrap" onclick="sb('photo')"><span class="lbl">포토형</span><span class="desc">썸네일 중심 갤러리</span></div>
+<span class="arr" id="a-b-photo" onclick="ts('b-photo')">&#8964;</span>
+</div>
+<div class="sub" id="s-b-photo">
+<div class="st">컬럼 수</div>
+<label class="opt"><input type="radio" name="pc" value="2"> 2열</label>
+<label class="opt"><input type="radio" name="pc" value="3" checked> 3열</label>
+<label class="opt"><input type="radio" name="pc" value="4"> 4열</label>
+</div>
+</div>
+<div class="item">
+<div class="item-hd">
+<input type="radio" name="bt" value="blog" id="br-blog" onchange="obc()">
+<div class="lbl-wrap" onclick="sb('blog')"><span class="lbl">블로그형</span><span class="desc">썸네일 + 제목 + 본문 요약</span></div>
+<span class="arr" id="a-b-blog" onclick="ts('b-blog')">&#8964;</span>
+</div>
+<div class="sub" id="s-b-blog">
+<label class="opt"><input type="checkbox" id="c-bl-tag"> 태그</label>
+<label class="opt"><input type="checkbox" id="c-bl-sum" checked> 본문 요약</label>
+</div>
+</div>
+<div class="item">
+<div class="item-hd">
+<input type="radio" name="bt" value="qna" id="br-qna" onchange="obc()">
+<div class="lbl-wrap" onclick="sb('qna')"><span class="lbl">QnA형</span><span class="desc">질문-답변 계층 구조</span></div>
+<span class="arr" id="a-b-qna" onclick="ts('b-qna')">&#8964;</span>
+</div>
+<div class="sub" id="s-b-qna">
+<label class="opt"><input type="checkbox" id="c-qna-cat"> 카테고리 컬럼</label>
+<label class="opt"><input type="checkbox" id="c-qna-badge" checked> 답변상태 뱃지</label>
+<label class="opt"><input type="checkbox" id="c-qna-secret"> 비밀글</label>
+</div>
+</div>
+<div class="item">
+<div class="item-hd">
+<input type="radio" name="bt" value="faq" id="br-faq" onchange="obc()">
+<div class="lbl-wrap" onclick="sb('faq')"><span class="lbl">FAQ형</span><span class="desc">아코디언 질문 목록</span></div>
+<span class="arr" id="a-b-faq" onclick="ts('b-faq')">&#8964;</span>
+</div>
+<div class="sub" id="s-b-faq">
+<label class="opt"><input type="checkbox" id="c-faq-cat"> 카테고리 탭</label>
+</div>
+</div>
+<div class="item">
+<div class="item-hd">
+<input type="radio" name="bt" value="brochure" id="br-brochure" onchange="obc()">
+<div class="lbl-wrap" onclick="sb('brochure')"><span class="lbl">브로슈어 (자료실)</span><span class="desc">다운로드 중심 자료 목록</span></div>
+<span class="arr" id="a-b-brochure" onclick="ts('b-brochure')">&#8964;</span>
+</div>
+<div class="sub" id="s-b-brochure">
+<label class="opt"><input type="checkbox" id="c-br-prev" checked> 바로보기 버튼</label>
+<label class="opt"><input type="checkbox" id="c-br-thumb" checked> 썸네일</label>
+</div>
+</div>
+</div>
+
+<div class="group">
+<div class="sec-label">프로그램 유형</div>
+<div class="item">
+<div class="item-hd">
+<input type="checkbox" id="c-pc">
+<div class="lbl-wrap" onclick="tc('pc')"><span class="lbl">프로그램 카드형</span><span class="desc">이미지 + 기간/모집현황 뱃지</span></div>
+<span class="arr" id="a-pc" onclick="ts('pc')">&#8964;</span>
+</div>
+<div class="sub" id="s-pc">
+<label class="opt"><input type="checkbox" id="c-pc-status" checked> 모집현황 뱃지</label>
+<label class="opt"><input type="checkbox" id="c-pc-date" checked> 기간 표시</label>
+</div>
+</div>
+<div class="item">
+<div class="item-hd">
+<input type="checkbox" id="c-cal">
+<div class="lbl-wrap" onclick="tc('cal')"><span class="lbl">캘린더형</span><span class="desc">월별 그리드 + 이벤트 바</span></div>
+<span class="arr" id="a-cal" onclick="ts('cal')">&#8964;</span>
+</div>
+<div class="sub" id="s-cal">
+<label class="opt"><input type="checkbox" id="c-cal-list" checked> 하단 일정 목록</label>
+</div>
+</div>
+</div>
+
+<div class="group" style="margin-bottom:0;">
+<div class="sec-label">푸터</div>
+<div class="item">
+<div class="item-hd">
+<input type="checkbox" id="c-ft">
+<div class="lbl-wrap" onclick="tc('ft')"><span class="lbl">푸터</span></div>
+<span class="arr" id="a-ft" onclick="ts('ft')">&#8964;</span>
+</div>
+<div class="sub" id="s-ft">
+<label class="opt"><input type="checkbox" id="c-ft-info" checked> 사업자 정보</label>
+<label class="opt"><input type="checkbox" id="c-ft-menu"> 하단 메뉴</label>
+<label class="opt"><input type="checkbox" id="c-ft-sns"> SNS 아이콘</label>
+</div>
+</div>
+</div>
+
+</div>
+<button class="btn-done" onclick="gen()">완료 — 미리보기 생성</button>
+</div>
+
+<div class="right panel" style="display:flex;flex-direction:column;">
+<div class="preview-label">미리보기</div>
+<div class="pf" id="pf">
+<div class="empty">
+<div class="empty-icon">&#128196;</div>
+<div>항목을 선택하고 [완료]를 눌러주세요</div>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+function ts(id){var sub=document.getElementById('s-'+id);var arr=document.getElementById('a-'+id);if(!sub)return;var o=sub.classList.toggle('open');if(arr)arr.classList.toggle('open',o);}
+function tc(id){var c=document.getElementById('c-'+id);if(c)c.checked=!c.checked;}
+function sb(t){var r=document.getElementById('br-'+t);if(r){r.checked=true;obc();}}
+function obc(){var sel=document.querySelector('input[name="bt"]:checked');var v=sel?sel.value:'';['notice','photo','blog','qna','faq','brochure'].forEach(function(t){var sub=document.getElementById('s-b-'+t);var arr=document.getElementById('a-b-'+t);var on=v===t;if(sub){on?sub.classList.add('open'):sub.classList.remove('open');}if(arr)arr.classList.toggle('open',on);});}
+function h(id){var e=document.getElementById(id);return e&&e.checked;}
+function rv(n){var e=document.querySelector('input[name="'+n+'"]:checked');return e?e.value:'';}
+
+function gen(){
+  var sec=[];var bt=rv('bt');
+  if(h('c-hd')){
+    var depth=rv('hd-d');var menus=['소개','서비스','공지사항','문의'];
+    var nav='<nav style="display:flex;margin-left:24px;">';
+    if(depth==='2'){menus.forEach(function(m){nav+='<div style="position:relative;display:inline-block;" onmouseenter="this.querySelector(\'.dd\').style.display=\'block\'" onmouseleave="this.querySelector(\'.dd\').style.display=\'none\'"><a href="#" style="display:block;padding:0 16px;height:56px;line-height:56px;color:rgba(255,255,255,0.8);text-decoration:none;font-size:13px;">'+m+'</a><div class="dd" style="display:none;position:absolute;top:56px;left:0;background:#fff;border:1px solid #eee;min-width:120px;z-index:100;border-radius:4px;box-shadow:0 4px 12px rgba(0,0,0,0.1);"><a href="#" style="display:block;padding:8px 14px;font-size:12px;color:#333;text-decoration:none;">'+m+' 하위 1</a><a href="#" style="display:block;padding:8px 14px;font-size:12px;color:#333;text-decoration:none;">'+m+' 하위 2</a></div></div>';});
+    }else{menus.forEach(function(m){nav+='<a href="#" style="display:block;padding:0 16px;height:56px;line-height:56px;color:rgba(255,255,255,0.8);text-decoration:none;font-size:13px;">'+m+'</a>';});}
+    nav+='</nav>';var rt='';
+    if(h('c-hd-srch'))rt+='<span style="color:rgba(255,255,255,0.7);font-size:16px;cursor:pointer;margin-left:12px;">&#128269;</span>';
+    if(h('c-hd-login'))rt+='<button style="margin-left:10px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:5px 14px;border-radius:4px;font-size:12px;cursor:pointer;">로그인</button>';
+    sec.push('<header style="background:#1a1a2e;color:#fff;display:flex;align-items:center;padding:0 24px;height:56px;">'+(h('c-hd-logo')?'<span style="font-weight:700;font-size:16px;flex-shrink:0;">LOGO</span>':'')+nav+'<div style="margin-left:auto;display:flex;align-items:center;">'+rt+'</div></header>');
+  }
+  if(h('c-sv')){var svt=rv('sv');sec.push(svt==='img'?'<div style="background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:40px 24px;text-align:center;"><p style="font-size:11px;opacity:0.5;margin-bottom:6px;">HOME > 공지사항</p><h2 style="font-size:22px;font-weight:700;">공지사항</h2></div>':'<div style="background:#f8f8f8;border-bottom:1px solid #eee;padding:16px 24px;"><p style="font-size:11px;color:#aaa;margin-bottom:4px;">HOME > 공지사항</p><h2 style="font-size:18px;font-weight:700;color:#222;">공지사항</h2></div>');}
+  var cs=[];
+  if(h('c-s')){var s='<div style="background:#fff;margin:14px 0;padding:10px 14px;border-radius:6px;border:1px solid #e0e0e0;display:flex;gap:7px;flex-wrap:wrap;align-items:center;">';if(h('c-s-cat'))s+='<select style="border:1px solid #ddd;border-radius:4px;padding:5px 7px;font-size:12px;background:#fff;"><option>카테고리 선택</option><option>공지</option><option>행사</option><option>교육</option></select>';if(h('c-s-type'))s+='<select style="border:1px solid #ddd;border-radius:4px;padding:5px 7px;font-size:12px;background:#fff;"><option>전체</option><option>제목</option><option>내용</option></select>';if(h('c-s-region'))s+='<select style="border:1px solid #ddd;border-radius:4px;padding:5px 7px;font-size:12px;background:#fff;"><option>전체 지역</option><option>서울</option><option>경기</option><option>부산</option></select>';if(h('c-s-date'))s+='<select style="border:1px solid #ddd;border-radius:4px;padding:5px 7px;font-size:12px;background:#fff;"><option>기간 전체</option><option>1개월</option><option>3개월</option></select>';if(h('c-s-box'))s+='<input type="text" placeholder="검색어를 입력해 주세요." style="flex:1;min-width:140px;border:1px solid #ddd;border-radius:4px;padding:5px 9px;font-size:12px;">';s+='<button style="background:#1a1a2e;color:#fff;border:none;border-radius:4px;padding:5px 14px;font-size:12px;cursor:pointer;">검색</button></div>';cs.push(s);}
+  if(bt==='notice'){var rows=[{no:'',t:'[공지] 서비스 이용약관 개정 안내',cat:'기타안내',d:'2024.05.12',pin:true,attach:true,writer:'관리자',badge:true},{no:'',t:'[공지] 3월 정기점검 일정 안내',cat:'행사',d:'2024.05.12',pin:true,attach:true,writer:'관리자',badge:false},{no:'249',t:'제목입니다.',cat:'교육',d:'2024.05.12',pin:false,attach:true,writer:'관리자',badge:false},{no:'248',t:'제목입니다.',cat:'기타안내',d:'2024.05.12',pin:false,attach:true,writer:'관리자',badge:false},{no:'247',t:'제목입니다.',cat:'기타안내',d:'2024.05.12',pin:false,attach:false,writer:'관리자',badge:false},{no:'246',t:'제목입니다.',cat:'기타안내',d:'2024.05.12',pin:false,attach:false,writer:'관리자',badge:false}];var sC=h('c-bn-cat'),sT=h('c-bn-thumb'),sA=h('c-bn-attach'),sW=h('c-bn-writer'),sB=h('c-bn-badge');var b='<div style="margin:10px 0;"><div style="font-size:12px;color:#888;margin-bottom:8px;">전체 251 | 현재페이지 1/26</div><table style="width:100%;border-collapse:collapse;background:#fff;border-top:2px solid #222;font-size:12px;"><thead><tr style="border-bottom:1px solid #e0e0e0;background:#fafafa;"><th style="padding:9px 10px;font-weight:600;color:#444;text-align:center;width:52px;">번호</th>'+(sC?'<th style="padding:9px 10px;font-weight:600;color:#444;text-align:center;width:80px;">카테고리</th>':'')+(sT?'<th style="padding:9px 10px;font-weight:600;color:#444;text-align:center;width:56px;">이미지</th>':'')+'<th style="padding:9px 10px;font-weight:600;color:#444;text-align:center;">제목</th>'+(sA?'<th style="padding:9px 10px;font-weight:600;color:#444;text-align:center;width:56px;">첨부파일</th>':'')+(sW?'<th style="padding:9px 10px;font-weight:600;color:#444;text-align:center;width:60px;">작성자</th>':'')+'<th style="padding:9px 10px;font-weight:600;color:#444;text-align:center;width:80px;">작성일</th></tr></thead><tbody>';rows.forEach(function(r){b+='<tr style="border-bottom:1px solid #f0f0f0;'+(r.pin?'background:#fafafa;':'')+'"><td style="padding:9px 10px;text-align:center;color:#aaa;">'+(r.pin?'&#128266;':r.no)+'</td>'+(sC?'<td style="padding:9px 10px;text-align:center;color:#666;">'+r.cat+'</td>':'')+(sT?'<td style="padding:9px 10px;text-align:center;"><div style="width:36px;height:36px;background:#ddd;border-radius:3px;margin:0 auto;"></div></td>':'')+'<td style="padding:9px 10px;color:#222;">'+(sB&&r.badge?'<span style="background:#e8f5e9;color:#388e3c;font-size:10px;padding:1px 5px;border-radius:3px;margin-right:4px;">N</span>':'')+r.t+'</td>'+(sA?'<td style="padding:9px 10px;text-align:center;color:#aaa;">'+(r.attach?'&#128206;':'')+'</td>':'')+(sW?'<td style="padding:9px 10px;text-align:center;color:#666;">'+r.writer+'</td>':'')+'<td style="padding:9px 10px;text-align:center;color:#aaa;">'+r.d+'</td></tr>';});b+='</tbody></table>';if(h('c-bn-pager')){b+='<div style="display:flex;justify-content:center;gap:4px;margin-top:12px;">';['&lt;',1,2,3,4,5,'&gt;'].forEach(function(n,i){b+='<span style="width:28px;height:28px;border:1px solid '+(i===1?'#1a1a2e':'#ddd')+';border-radius:4px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;background:'+(i===1?'#1a1a2e':'#fff')+';color:'+(i===1?'#fff':'#555')+';">'+n+'</span>';});b+='</div>';}b+='</div>';cs.push(b);}
+  if(bt==='photo'){var col=rv('pc')||'3';var b='<div style="margin:10px 0;"><div style="display:grid;grid-template-columns:repeat('+col+',1fr);gap:8px;">';for(var i=1;i<=parseInt(col)*2;i++)b+='<div style="background:#fff;border:1px solid #e0e0e0;border-radius:6px;overflow:hidden;"><div style="background:#ddd;height:80px;"></div><div style="padding:7px 9px;"><div style="font-size:12px;font-weight:600;color:#222;">사진 제목 '+i+'</div><div style="font-size:11px;color:#aaa;margin-top:2px;">2024.05.12</div></div></div>';b+='</div></div>';cs.push(b);}
+  if(bt==='blog'){var b='<div style="margin:10px 0;">';[{t:'스타트업을 위한 UI 설계 가이드',d:'2024.05.10'},{t:'사용자 경험을 높이는 검색 설계',d:'2024.05.05'},{t:'공공기관 웹사이트 트렌드 2025',d:'2024.04.28'}].forEach(function(it){b+='<div style="display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #f0f0f0;"><div style="width:72px;height:54px;background:#ddd;border-radius:5px;flex-shrink:0;"></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:#222;">'+it.t+'</div>'+(h('c-bl-sum')?'<div style="font-size:11px;color:#888;margin-top:3px;line-height:1.5;">본문 요약 텍스트가 이 위치에 2~3줄로 노출됩니다.</div>':'')+'<div style="display:flex;align-items:center;gap:6px;margin-top:4px;">'+(h('c-bl-tag')?'<span style="background:#f0f0f0;color:#666;font-size:10px;padding:1px 6px;border-radius:3px;">#태그</span>':'')+'<span style="font-size:10px;color:#aaa;">'+it.d+'</span></div></div></div>';});b+='</div>';cs.push(b);}
+  if(bt==='qna'){var sC2=h('c-qna-cat');var items=[{q:'서비스 이용 방법이 궁금합니다.',cat:'이용안내',ans:true,sec:false},{q:'회원가입이 안 됩니다.',cat:'계정',ans:false,sec:false},{q:'개인정보 처리 관련 문의드립니다.',cat:'기타',ans:true,sec:true}];var b='<div style="margin:10px 0;"><table style="width:100%;border-collapse:collapse;background:#fff;border-top:2px solid #222;font-size:12px;"><thead><tr style="border-bottom:1px solid #e0e0e0;background:#fafafa;"><th style="padding:9px 10px;font-weight:600;color:#444;text-align:center;width:52px;">번호</th>'+(sC2?'<th style="padding:9px 10px;font-weight:600;color:#444;text-align:center;width:80px;">카테고리</th>':'')+'<th style="padding:9px 10px;font-weight:600;color:#444;text-align:center;">제목</th>'+(h('c-qna-badge')?'<th style="padding:9px 10px;font-weight:600;color:#444;text-align:center;width:72px;">상태</th>':'')+'<th style="padding:9px 10px;font-weight:600;color:#444;text-align:center;width:80px;">작성일</th></tr></thead><tbody>';items.forEach(function(it,i){b+='<tr style="border-bottom:1px solid #f0f0f0;"><td style="padding:9px 10px;text-align:center;color:#aaa;">'+(i+1)+'</td>'+(sC2?'<td style="padding:9px 10px;text-align:center;color:#666;">'+it.cat+'</td>':'')+'<td style="padding:9px 10px;color:#222;">'+it.q+(it.sec&&h('c-qna-secret')?' 🔒':'')+'</td>'+(h('c-qna-badge')?'<td style="padding:9px 10px;text-align:center;"><span style="font-size:10px;padding:2px 8px;border-radius:3px;'+(it.ans?'background:#e8f5e9;color:#388e3c;':'background:#fff3e0;color:#f57c00;')+'">'+(it.ans?'답변완료':'대기중')+'</span></td>':'')+'<td style="padding:9px 10px;text-align:center;color:#aaa;">2024.05.12</td></tr>';if(it.ans)b+='<tr style="background:#f9f9f9;border-bottom:1px solid #f0f0f0;"><td></td>'+(sC2?'<td></td>':'')+'<td colspan="'+(1+(h('c-qna-badge')?1:0)+1)+'" style="padding:7px 10px 7px 20px;font-size:11px;color:#666;">↳ 문의 주셔서 감사합니다. 확인 후 빠르게 처리해드리겠습니다.</td></tr>';});b+='</tbody></table></div>';cs.push(b);}
+  if(bt==='faq'){var faqs=[{q:'서비스는 어떻게 신청하나요?',a:'홈페이지 내 신청 메뉴를 통해 온라인으로 접수하실 수 있습니다.'},{q:'이용 요금은 어떻게 되나요?',a:'기본 서비스는 무료이며, 프리미엄 기능은 별도 문의 부탁드립니다.'},{q:'문의는 어디로 하면 되나요?',a:'고객센터(02-0000-0000) 또는 1:1 문의를 이용해 주세요.'}];var b='<div style="margin:10px 0;">';if(h('c-faq-cat'))b+='<div style="display:flex;gap:6px;margin-bottom:10px;">'+['전체','이용안내','결제','기타'].map(function(c,i){return '<span style="padding:4px 12px;border-radius:20px;font-size:11px;cursor:pointer;'+(i===0?'background:#1a1a2e;color:#fff;':'background:#f0f0f0;color:#555;')+'">'+c+'</span>';}).join('')+'</div>';faqs.forEach(function(f,i){b+='<div style="border:1px solid #e0e0e0;border-radius:5px;margin-bottom:5px;overflow:hidden;"><div style="display:flex;align-items:center;padding:10px 12px;cursor:pointer;background:#fff;" onclick="this.nextSibling.style.display=this.nextSibling.style.display===\'none\'?\'block\':\'none\'"><span style="color:#1a1a2e;font-weight:700;margin-right:8px;font-size:12px;">Q</span><span style="flex:1;font-size:12px;color:#222;">'+f.q+'</span><span style="font-size:14px;color:#aaa;">+</span></div><div style="display:'+(i===0?'block':'none')+';background:#f9f9f9;padding:10px 12px;border-top:1px solid #eee;"><span style="color:#888;font-weight:700;margin-right:8px;font-size:12px;">A</span><span style="font-size:12px;color:#555;">'+f.a+'</span></div></div>';});b+='</div>';cs.push(b);}
+  if(bt==='brochure'){var b='<div style="margin:10px 0;">';[{t:'2025 서비스 브로슈어',d:'2025.03.01'},{t:'연간 보고서 2024',d:'2025.01.15'},{t:'홍보물 패키지',d:'2024.12.01'}].forEach(function(it){b+='<div style="display:flex;align-items:center;gap:10px;padding:8px;border:1px solid #e0e0e0;border-radius:5px;margin-bottom:5px;background:#fff;">'+(h('c-br-thumb')?'<div style="width:44px;height:54px;background:#ddd;border-radius:3px;flex-shrink:0;"></div>':'')+'<div style="flex:1;"><div style="font-size:12px;font-weight:600;color:#222;">'+it.t+'</div><div style="font-size:11px;color:#aaa;margin-top:2px;">'+it.d+'</div></div><div style="display:flex;gap:5px;">'+(h('c-br-prev')?'<button style="font-size:11px;padding:4px 9px;border:1px solid #ddd;border-radius:3px;cursor:pointer;background:#fff;color:#555;">바로보기</button>':'')+'<button style="font-size:11px;padding:4px 9px;border:1px solid #ddd;border-radius:3px;cursor:pointer;background:#fff;color:#555;">다운로드</button></div></div>';});b+='</div>';cs.push(b);}
+  if(h('c-pc')){var b='<div style="margin:10px 0;"><h3 style="font-size:13px;font-weight:600;margin-bottom:8px;color:#333;">프로그램 목록</h3><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">';[{t:'봄철 환경교육 프로그램',s:'모집중',p:'3/25~4/10'},{t:'청소년 리더십 캠프',s:'마감',p:'4/1~4/5'},{t:'지역주민 건강강좌',s:'모집중',p:'4/15~5/30'}].forEach(function(p){b+='<div style="background:#fff;border:1px solid #e0e0e0;border-radius:6px;overflow:hidden;"><div style="background:#ddd;height:80px;position:relative;">'+(h('c-pc-status')?'<span style="position:absolute;top:7px;left:7px;font-size:10px;padding:2px 7px;border-radius:3px;'+(p.s==='모집중'?'background:#1a1a2e;color:#fff;':'background:#aaa;color:#fff;')+'">'+p.s+'</span>':'')+'</div><div style="padding:8px 10px;"><div style="font-size:12px;font-weight:600;color:#222;">'+p.t+'</div>'+(h('c-pc-date')?'<div style="font-size:11px;color:#aaa;margin-top:3px;">'+p.p+'</div>':'')+'</div></div>';});b+='</div></div>';cs.push(b);}
+  if(h('c-cal')){var evts={10:'환경교육',15:'리더십캠프',20:'건강강좌'};var b='<div style="margin:10px 0;"><h3 style="font-size:13px;font-weight:600;margin-bottom:8px;color:#333;">캘린더</h3><div style="background:#fff;border:1px solid #e0e0e0;border-radius:6px;overflow:hidden;"><div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #eee;"><span style="cursor:pointer;color:#888;">&lt;</span><span style="font-size:13px;font-weight:600;color:#222;">2025년 3월</span><span style="cursor:pointer;color:#888;">&gt;</span></div><div style="display:grid;grid-template-columns:repeat(7,1fr);text-align:center;">';['일','월','화','수','목','금','토'].forEach(function(d,i){b+='<div style="padding:5px 0;font-size:10px;font-weight:600;color:'+(i===0?'#e53935':i===6?'#1565c0':'#888')+';">'+d+'</div>';});for(var i=0;i<6;i++)b+='<div></div>';for(var d=1;d<=31;d++){var isT=d===23;var dow=(6+d-1)%7;b+='<div style="padding:4px 2px;font-size:11px;'+(isT?'background:#1a1a2e;color:#fff;border-radius:4px;':dow===0?'color:#e53935;':dow===6?'color:#1565c0;':'color:#333;')+'">'+(d)+(evts[d]?'<div style="font-size:9px;background:#e8f0fe;color:#1a73e8;border-radius:2px;padding:1px 2px;overflow:hidden;white-space:nowrap;">'+evts[d]+'</div>':'')+'</div>';}b+='</div></div>';if(h('c-cal-list')){b+='<div style="margin-top:8px;">';Object.keys(evts).forEach(function(d){b+='<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #f0f0f0;"><span style="font-size:11px;color:#aaa;min-width:40px;">3/'+d+'</span><span style="width:4px;height:4px;background:#1a1a2e;border-radius:50%;flex-shrink:0;"></span><span style="font-size:12px;color:#333;">'+evts[d]+'</span></div>';});b+='</div>';}b+='</div>';cs.push(b);}
+  var hasLnb=h('c-lnb');var lnbPos=rv('lnb');
+  var lnbHtml='<div style="width:150px;flex-shrink:0;"><div style="background:#fff;border:1px solid #e0e0e0;border-radius:6px;overflow:hidden;"><div style="background:#1a1a2e;color:#fff;padding:9px 12px;font-size:12px;font-weight:600;">공지사항</div>'+['전체공지','일반공지','보도자료','행사안내'].map(function(m,i){return '<div style="padding:8px 12px;font-size:12px;'+(i===0?'background:#f0f4ff;color:#1a1a2e;font-weight:600;':'color:#555;')+'border-bottom:1px solid #f0f0f0;cursor:pointer;">'+m+'</div>';}).join('')+'</div></div>';
+  var contHtml='<div style="flex:1;min-width:0;">'+cs.join('')+'</div>';var main='';
+  if(hasLnb&&lnbPos!=='tab'){main='<div style="display:flex;gap:14px;padding:14px 24px;">'+(lnbPos==='left'?lnbHtml+contHtml:contHtml+lnbHtml)+'</div>';}
+  else if(hasLnb&&lnbPos==='tab'){var tabHtml='<div style="display:flex;border-bottom:2px solid #e0e0e0;margin-bottom:10px;">'+['전체공지','일반공지','보도자료','행사안내'].map(function(m,i){return '<div style="padding:7px 14px;font-size:12px;cursor:pointer;'+(i===0?'border-bottom:2px solid #1a1a2e;color:#1a1a2e;font-weight:600;margin-bottom:-2px;':'color:#888;')+'">'+m+'</div>';}).join('')+'</div>';main='<div style="padding:14px 24px;">'+tabHtml+cs.join('')+'</div>';}
+  else{main='<div style="padding:14px 24px;">'+cs.join('')+'</div>';}
+  sec.push(main);
+  if(h('c-ft')){var f='<footer style="background:#222;color:#aaa;padding:18px 24px;font-size:11px;line-height:1.8;">';if(h('c-ft-menu'))f+='<div style="display:flex;gap:12px;margin-bottom:7px;">'+['이용약관','개인정보처리방침','사이트맵','고객센터'].map(function(m){return '<a href="#" style="color:#ccc;text-decoration:none;font-size:11px;">'+m+'</a>';}).join('')+'</div>';if(h('c-ft-sns'))f+='<div style="display:flex;gap:8px;margin-bottom:7px;">'+['f','t','i','y'].map(function(s){return '<span style="width:24px;height:24px;background:#444;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#ccc;font-size:10px;cursor:pointer;">'+s+'</span>';}).join('')+'</div>';if(h('c-ft-info'))f+='<div>상호명 주식회사 OOO | 대표자: 홍길동 | 사업자등록번호: 000-00-00000<br>주소: 서울특별시 강남구 테헤란로 000 | 대표전화: 02-0000-0000 | Copyright 2025. All rights reserved.</div>';f+='</footer>';sec.push(f);}
+  var html='<!DOCTYPE html><html><head><meta charset="utf-8"><style>*{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif;}body{background:#f5f5f5;color:#222;font-size:14px;}</style></head><body>'+sec.join('')+'</body></html>';
+  var frame=document.getElementById('pf');frame.innerHTML='<iframe id="pif" srcdoc=""></iframe>';document.getElementById('pif').srcdoc=html;
+}
+</script>
+</body>
+</html>
