@@ -85,6 +85,10 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f4
             </div>
             <div class="st" style="margin-top:6px;">메뉴명</div>
             <div id="menu-name-inputs"></div>
+            <div class="st" style="margin-top:6px;">메뉴 위치</div>
+            <label class="opt"><input type="radio" name="hd-align" value="left" checked> 왼쪽 정렬</label>
+            <label class="opt"><input type="radio" name="hd-align" value="center"> 가운데 정렬</label>
+            <label class="opt"><input type="radio" name="hd-align" value="right"> 오른쪽 정렬</label>
             <div class="st" style="margin-top:6px;">포함 요소</div>
             <label class="opt"><input type="checkbox" id="c-hd-logo" checked> 로고</label>
             <label class="opt"><input type="checkbox" id="c-hd-login"> 로그인 버튼</label>
@@ -592,15 +596,15 @@ function togglePanel(){
 function applyMaxWidth(val){
   var pif=document.getElementById('pif');
   if(!pif||!pif.contentDocument)return;
-  var body=pif.contentDocument.body;
-  if(!body)return;
+  var wrap=pif.contentDocument.getElementById('content-wrap');
+  if(!wrap)return;
   if(val){
-    body.style.maxWidth=val;
-    body.style.margin='0 auto';
-    body.style.boxSizing='border-box';
+    wrap.style.maxWidth=val;
+    wrap.style.margin='0 auto';
+    wrap.style.boxSizing='border-box';
   } else {
-    body.style.maxWidth='';
-    body.style.margin='';
+    wrap.style.maxWidth='';
+    wrap.style.margin='';
   }
 }
 
@@ -647,6 +651,8 @@ function gen(){
   if(h('c-hd')){
     var menus=menuNames.slice(0,menuCount);
     var navType=rv('hd-nav-type')||'dropdown';
+    var hdAlign=rv('hd-align')||'left';
+    var navJustify=hdAlign==='center'?'center':hdAlign==='right'?'flex-end':'flex-start';
     var hasNav=h('c-hd-nav');
     var rt='';
     if(h('c-hd-srch'))rt+='<span style="color:rgba(255,255,255,0.7);font-size:16px;cursor:pointer;margin-left:12px;">&#128269;</span>';
@@ -656,13 +662,12 @@ function gen(){
 
     if(!hasNav){
       // 1depth 기본 (드롭다운 미적용)
-      var nav='<nav style="display:flex;margin-left:24px;">';
-      menus.forEach(function(m){nav+='<a href="#" data-edit style="display:block;padding:0 16px;height:56px;line-height:56px;color:rgba(255,255,255,0.8);text-decoration:none;font-size:13px;">'+m+'</a>';});
+      var nav='<nav style="display:flex;'+(hdAlign==='left'?'margin-left:24px;':'flex:1;justify-content:'+navJustify+';')+'">'; menus.forEach(function(m){nav+='<a href="#" data-edit style="display:block;padding:0 16px;height:56px;line-height:56px;color:rgba(255,255,255,0.8);text-decoration:none;font-size:13px;">'+m+'</a>';});
       nav+='</nav>';
       sec.push(headerBase+logoHtml+nav+'<div style="margin-left:auto;display:flex;align-items:center;">'+rt+'</div></header>');
 
     } else if(navType==='dropdown'){
-      var nav='<nav style="display:flex;margin-left:24px;" data-nav="dropdown">';
+      var nav='<nav style="display:flex;'+(hdAlign==='left'?'margin-left:24px;':'flex:1;justify-content:'+navJustify+';')+'" data-nav="dropdown">';
       menus.forEach(function(m){
         nav+='<div class="nav-item" style="position:relative;display:inline-block;">'
           +'<a href="#" data-edit style="display:block;padding:0 16px;height:56px;line-height:56px;color:rgba(255,255,255,0.8);text-decoration:none;font-size:13px;">'+m+'</a>'
@@ -675,7 +680,7 @@ function gen(){
       sec.push(headerBase+logoHtml+nav+'<div style="margin-left:auto;display:flex;align-items:center;">'+rt+'</div></header>');
 
     } else if(navType==='mega'){
-      var nav='<nav style="display:flex;margin-left:24px;" data-nav="mega">';
+      var nav='<nav style="display:flex;'+(hdAlign==='left'?'margin-left:24px;':'flex:1;justify-content:'+navJustify+';')+'" data-nav="mega">';
       menus.forEach(function(m){
         nav+='<div class="nav-item" style="position:relative;display:inline-block;">'
           +'<a href="#" data-edit style="display:block;padding:0 16px;height:56px;line-height:56px;color:rgba(255,255,255,0.8);text-decoration:none;font-size:13px;">'+m+'</a>'
@@ -694,7 +699,7 @@ function gen(){
       sec.push(headerBase+logoHtml+nav+'<div style="margin-left:auto;display:flex;align-items:center;">'+rt+'</div></header>');
 
     } else if(navType==='side'){
-      var nav='<nav style="display:flex;margin-left:24px;" data-nav="side">';
+      var nav='<nav style="display:flex;'+(hdAlign==='left'?'margin-left:24px;':'flex:1;justify-content:'+navJustify+';')+'" data-nav="side">';
       menus.forEach(function(m){
         nav+='<div class="nav-item" style="position:relative;display:inline-block;">'
           +'<a href="#" data-edit style="display:block;padding:0 16px;height:56px;line-height:56px;color:rgba(255,255,255,0.8);text-decoration:none;font-size:13px;">'+m+'</a>'
@@ -714,7 +719,7 @@ function gen(){
       sec.push(headerBase+logoHtml+nav+'<div style="margin-left:auto;display:flex;align-items:center;">'+rt+'</div></header>');
 
     } else if(navType==='fulldown'){
-      var nav='<nav style="display:flex;margin-left:24px;" data-nav="fulldown">';
+      var nav='<nav style="display:flex;'+(hdAlign==='left'?'margin-left:24px;':'flex:1;justify-content:'+navJustify+';')+'" data-nav="fulldown">';
       menus.forEach(function(m){
         nav+='<div class="nav-item" style="position:relative;display:inline-block;">'
           +'<a href="#" data-edit style="display:block;padding:0 16px;height:56px;line-height:56px;color:rgba(255,255,255,0.8);text-decoration:none;font-size:13px;">'+m+'</a>'
@@ -1179,9 +1184,9 @@ function gen(){
   var hasLnb=h('c-lnb');var lnbPos=rv('lnb');
   var curLnbNames=lnbNames.slice(0,lnbCount);var lnbHtml='<div style="width:150px;flex-shrink:0;"><div style="background:#fff;border:1px solid #e0e0e0;border-radius:6px;overflow:hidden;"><div data-edit style="background:#1a1a2e;color:#fff;padding:9px 12px;font-size:12px;font-weight:600;">'+lnbTitle+'</div>'+curLnbNames.map(function(m,i){return '<div data-edit style="padding:8px 12px;font-size:12px;'+(i===0?'background:#f0f4ff;color:#1a1a2e;font-weight:600;':'color:#555;')+'border-bottom:1px solid #f0f0f0;cursor:pointer;">'+m+'</div>';}).join('')+'</div></div>';
   var contHtml='<div style="flex:1;min-width:0;">'+cs.join('')+'</div>';var main='';
-  if(hasLnb&&lnbPos!=='tab'){main='<div style="display:flex;gap:14px;padding:14px 24px;">'+(lnbPos==='left'?lnbHtml+contHtml:contHtml+lnbHtml)+'</div>';}
-  else if(hasLnb&&lnbPos==='tab'){var tabHtml='<div style="display:flex;border-bottom:2px solid #e0e0e0;margin-bottom:10px;">'+curLnbNames.map(function(m,i){return '<div data-edit style="padding:7px 14px;font-size:12px;cursor:pointer;'+(i===0?'border-bottom:2px solid #1a1a2e;color:#1a1a2e;font-weight:600;margin-bottom:-2px;':'color:#888;')+'">'+m+'</div>';}).join('')+'</div>';main='<div style="padding:24px 40px;">'+tabHtml+cs.join('')+'</div>';}
-  else{main='<div style="padding:24px 40px;">'+cs.join('')+'</div>';}
+  if(hasLnb&&lnbPos!=='tab'){main='<div id="content-wrap" style="display:flex;gap:14px;padding:14px 24px;">'+(lnbPos==='left'?lnbHtml+contHtml:contHtml+lnbHtml)+'</div>';}
+  else if(hasLnb&&lnbPos==='tab'){var tabHtml='<div style="display:flex;border-bottom:2px solid #e0e0e0;margin-bottom:10px;">'+curLnbNames.map(function(m,i){return '<div data-edit style="padding:7px 14px;font-size:12px;cursor:pointer;'+(i===0?'border-bottom:2px solid #1a1a2e;color:#1a1a2e;font-weight:600;margin-bottom:-2px;':'color:#888;')+'">'+m+'</div>';}).join('')+'</div>';main='<div id="content-wrap" style="padding:24px 40px;">'+tabHtml+cs.join('')+'</div>';}
+  else{main='<div id="content-wrap" style="padding:24px 40px;">'+cs.join('')+'</div>';}
   sec.push(main);
   if(h('c-ft')){var f='<footer style="background:#222;color:#aaa;padding:18px 24px;font-size:11px;line-height:1.8;">';if(h('c-ft-menu'))f+='<div style="display:flex;gap:12px;margin-bottom:7px;">'+['이용약관','개인정보처리방침','사이트맵','고객센터'].map(function(m){return '<a href="#" style="color:#ccc;text-decoration:none;font-size:11px;">'+m+'</a>';}).join('')+'</div>';if(h('c-ft-sns'))f+='<div style="display:flex;gap:8px;margin-bottom:7px;">'+['f','t','i','y'].map(function(s){return '<span style="width:24px;height:24px;background:#444;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#ccc;font-size:10px;cursor:pointer;">'+s+'</span>';}).join('')+'</div>';if(h('c-ft-info'))f+='<div data-edit>상호명 주식회사 OOO | 대표자: 홍길동 | 사업자등록번호: 000-00-00000<br>주소: 서울특별시 강남구 테헤란로 000 | 대표전화: 02-0000-0000 | Copyright 2025. All rights reserved.</div>';f+='</footer>';sec.push(f);}
   var editableStyle='.editable{outline:none;cursor:text;border-radius:2px;transition:background 0.15s;}.editable:hover{background:rgba(59,130,246,0.07);}.editable:focus{background:rgba(59,130,246,0.12);box-shadow:0 0 0 1px rgba(59,130,246,0.3);}';
