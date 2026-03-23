@@ -207,6 +207,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f4
             <label class="opt"><input type="checkbox" id="c-ph-views"> 조회수</label>
             <label class="opt"><input type="checkbox" id="c-ph-source"> 출처</label>
             <label class="opt"><input type="checkbox" id="c-ph-badge"> NEW 뱃지</label>
+            <label class="opt"><input type="checkbox" id="c-ph-pager" checked> 페이지네이션</label>
             <div class="st" style="margin-top:6px;">태그 (직접 추가)</div>
             <div id="photo-tags"></div>
             <div style="display:flex;gap:5px;margin-top:3px;">
@@ -224,8 +225,15 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f4
           <div class="sub" id="s-b-blog">
             <div class="st" style="color:#aaa;font-size:10px;">※ 미리보기에서 직접 클릭해서 수정하세요</div>
             <label class="opt"><input type="checkbox" id="c-bl-thumb" checked> 썸네일 이미지</label>
-            <label class="opt"><input type="checkbox" id="c-bl-tag"> 태그</label>
+            <label class="opt"><input type="checkbox" id="c-bl-tag"> 태그 표시</label>
             <label class="opt"><input type="checkbox" id="c-bl-sum" checked> 본문 요약</label>
+            <label class="opt"><input type="checkbox" id="c-bl-pager" checked> 페이지네이션</label>
+            <div class="st" style="margin-top:6px;">태그 (직접 추가)</div>
+            <div id="blog-tags"></div>
+            <div style="display:flex;gap:5px;margin-top:3px;">
+              <input type="text" id="blog-tag-input" placeholder="태그 입력 (예: 디자인)" style="flex:1;border:1px solid #e0e0e0;border-radius:5px;padding:5px 8px;font-size:12px;color:#222;">
+              <button onclick="addBlogTag()" style="background:#1a1a2e;color:#fff;border:none;border-radius:5px;padding:5px 10px;font-size:12px;cursor:pointer;white-space:nowrap;">+ 추가</button>
+            </div>
           </div>
         </div>
         <div class="item">
@@ -239,6 +247,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f4
             <label class="opt"><input type="checkbox" id="c-qna-cat"> 카테고리 컬럼</label>
             <label class="opt"><input type="checkbox" id="c-qna-badge" checked> 답변상태 뱃지</label>
             <label class="opt"><input type="checkbox" id="c-qna-secret"> 비밀글</label>
+            <label class="opt"><input type="checkbox" id="c-qna-pager" checked> 페이지네이션</label>
           </div>
         </div>
         <div class="item">
@@ -250,6 +259,12 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f4
           <div class="sub" id="s-b-faq">
             <div class="st" style="color:#aaa;font-size:10px;">※ 미리보기에서 직접 클릭해서 수정하세요</div>
             <label class="opt"><input type="checkbox" id="c-faq-cat"> 카테고리 탭</label>
+            <div class="st" style="margin-top:6px;">카테고리 목록</div>
+            <div id="faq-cat-list"></div>
+            <div style="display:flex;gap:5px;margin-top:4px;">
+              <input type="text" id="faq-cat-input" placeholder="카테고리명 (예: 회원)" style="flex:1;border:1px solid #e0e0e0;border-radius:5px;padding:5px 8px;font-size:12px;color:#222;">
+              <button onclick="addFaqCat()" style="background:#1a1a2e;color:#fff;border:none;border-radius:5px;padding:5px 10px;font-size:12px;cursor:pointer;white-space:nowrap;">+ 추가</button>
+            </div>
           </div>
         </div>
         <div class="item">
@@ -278,8 +293,34 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f4
           </div>
           <div class="sub" id="s-b-pgcard">
             <div class="st" style="color:#aaa;font-size:10px;">※ 미리보기에서 직접 클릭해서 수정하세요</div>
+            <div class="st">컬럼 수</div>
+            <label class="opt"><input type="radio" name="pgcol" value="3" checked> 3열</label>
+            <label class="opt"><input type="radio" name="pgcol" value="4"> 4열</label>
+            <div class="st">옵션</div>
             <label class="opt"><input type="checkbox" id="c-pc-status" checked> 모집현황 뱃지</label>
             <label class="opt"><input type="checkbox" id="c-pc-date" checked> 기간 표시</label>
+            <label class="opt"><input type="checkbox" id="c-pc-pager" checked> 페이지네이션</label>
+          </div>
+        </div>
+        <div class="item">
+          <div class="item-hd">
+            <input type="radio" name="bt" value="pglist" id="br-pglist" onchange="obc()">
+            <div class="lbl-wrap" onclick="sb('pglist')"><span class="lbl">프로그램 리스트형</span><span class="desc">번호·제목·날짜·링크 테이블</span></div>
+            <span class="arr" id="a-b-pglist" onclick="ts('b-pglist')">&#8964;</span>
+          </div>
+          <div class="sub" id="s-b-pglist">
+            <div class="st" style="color:#aaa;font-size:10px;">※ 미리보기에서 직접 클릭해서 수정하세요</div>
+            <div class="st">컬럼 옵션</div>
+            <label class="opt"><input type="checkbox" id="c-pl-status" checked> 모집현황 뱃지</label>
+            <label class="opt"><input type="checkbox" id="c-pl-date" checked> 등록일</label>
+            <label class="opt"><input type="checkbox" id="c-pl-link" checked> 링크이동 버튼</label>
+            <label class="opt"><input type="checkbox" id="c-pl-pager" checked> 페이지네이션</label>
+            <div class="st" style="margin-top:6px;">기타 (직접 추가)</div>
+            <div id="pglist-custom-cols"></div>
+            <div style="display:flex;gap:5px;margin-top:3px;">
+              <input type="text" id="pglist-col-input" placeholder="컬럼명 (예: 담당자)" style="flex:1;border:1px solid #e0e0e0;border-radius:5px;padding:5px 8px;font-size:12px;color:#222;">
+              <button onclick="addPglistCol()" style="background:#1a1a2e;color:#fff;border:none;border-radius:5px;padding:5px 10px;font-size:12px;cursor:pointer;white-space:nowrap;">+ 추가</button>
+            </div>
           </div>
         </div>
         <div class="item">
@@ -340,7 +381,78 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f4
 <script>
 var customSelects=[];
 var photoTags=[];
+var blogTags=[];
+var faqCats=['전체','이용안내','결제','기타'];
+
+function addFaqCat(){
+  var inp=document.getElementById('faq-cat-input');
+  var val=inp.value.trim();
+  if(!val)return;
+  faqCats.push(val);
+  inp.value='';
+  renderFaqCats();
+  var cb=document.getElementById('c-faq-cat');if(cb)cb.checked=true;
+}
+function renderFaqCats(){
+  var wrap=document.getElementById('faq-cat-list');
+  if(!wrap)return;
+  wrap.innerHTML='';
+  faqCats.forEach(function(name,i){
+    var row=document.createElement('div');
+    row.className='opt';
+    row.style.justifyContent='space-between';
+    // '전체'는 삭제 불가
+    var delBtn=i===0?'<span style="font-size:11px;color:#ddd;padding:0 4px;">✕</span>':'<span onclick="removeFaqCat('+i+')" style="font-size:11px;color:#ccc;cursor:pointer;padding:0 4px;">✕</span>';
+    row.innerHTML='<span style="font-size:12px;color:#555;flex:1;padding:2px 0;">'+name+'</span>'+delBtn;
+    wrap.appendChild(row);
+  });
+}
+function removeFaqCat(i){
+  if(i===0)return; // '전체' 보호
+  faqCats.splice(i,1);
+  renderFaqCats();
+}
+
+function addBlogTag(){
+  var inp=document.getElementById('blog-tag-input');
+  var val=inp.value.trim();
+  if(!val)return;
+  blogTags.push(val);
+  inp.value='';
+  renderBlogTags();
+  var cb=document.getElementById('c-bl-tag');if(cb)cb.checked=true;
+}
+function renderBlogTags(){
+  var wrap=document.getElementById('blog-tags');
+  if(!wrap)return;
+  wrap.innerHTML='';
+  blogTags.forEach(function(tag,i){
+    var row=document.createElement('div');
+    row.className='opt';
+    row.style.justifyContent='space-between';
+    row.innerHTML='<label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;flex:1;"><input type="checkbox" class="blog-tag-chk" data-idx="'+i+'" checked style="width:13px;height:13px;accent-color:#1a1a2e;"> #'+tag+'</label><span onclick="removeBlogTag('+i+')" style="font-size:11px;color:#ccc;cursor:pointer;padding:0 4px;">✕</span>';
+    wrap.appendChild(row);
+  });
+}
+function removeBlogTag(i){blogTags.splice(i,1);renderBlogTags();}
 var noticeCustomCols=[];
+var pglistCustomCols=[];
+
+function addPglistCol(){
+  var inp=document.getElementById('pglist-col-input');
+  var val=inp.value.trim();if(!val)return;
+  pglistCustomCols.push(val);inp.value='';renderPglistCols();
+}
+function renderPglistCols(){
+  var wrap=document.getElementById('pglist-custom-cols');if(!wrap)return;
+  wrap.innerHTML='';
+  pglistCustomCols.forEach(function(name,i){
+    var row=document.createElement('div');row.className='opt';row.style.justifyContent='space-between';
+    row.innerHTML='<label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;flex:1;"><input type="checkbox" class="pglist-col-chk" data-idx="'+i+'" checked style="width:13px;height:13px;accent-color:#1a1a2e;"> '+name+'</label><span onclick="removePglistCol('+i+')" style="font-size:11px;color:#ccc;cursor:pointer;padding:0 4px;">✕</span>';
+    wrap.appendChild(row);
+  });
+}
+function removePglistCol(i){pglistCustomCols.splice(i,1);renderPglistCols();}
 var menuCount=4;
 var menuNames=['소개','서비스','공지사항','문의'];
 var lnbCount=4;
@@ -425,14 +537,14 @@ function removePhotoTag(i){photoTags.splice(i,1);renderPhotoTags();}
 function addCustomSelect(){var inp=document.getElementById('custom-select-input');var val=inp.value.trim();if(!val)return;customSelects.push(val);inp.value='';renderCustomSelects();var cs=document.getElementById('c-s');if(cs)cs.checked=true;}
 function renderCustomSelects(){var wrap=document.getElementById('custom-selects');if(!wrap)return;wrap.innerHTML='';customSelects.forEach(function(name,i){var row=document.createElement('div');row.className='opt';row.style.justifyContent='space-between';row.innerHTML='<label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;flex:1;"><input type="checkbox" class="custom-chk" data-idx="'+i+'" checked style="width:13px;height:13px;accent-color:#1a1a2e;"> '+name+' 셀렉트</label><span onclick="removeCustomSelect('+i+')" style="font-size:11px;color:#ccc;cursor:pointer;padding:0 4px;">✕</span>';wrap.appendChild(row);});}
 function removeCustomSelect(i){customSelects.splice(i,1);renderCustomSelects();}
-function resetAll(){document.querySelectorAll('input[type=checkbox]').forEach(function(el){el.checked=false;});document.querySelectorAll('input[type=radio]').forEach(function(el){el.checked=false;});['c-s-box','c-bn-pager','c-bl-sum','c-qna-badge','c-br-prev','c-br-thumb','c-pc-status','c-pc-date','c-cal-list','c-hd-logo','c-ft-info'].forEach(function(id){var e=document.getElementById(id);if(e)e.checked=true;});var r;r=document.querySelector('input[name="hd-d"][value="1"]');if(r)r.checked=true;r=document.querySelector('input[name="sv"][value="img"]');if(r)r.checked=true;r=document.querySelector('input[name="lnb"][value="left"]');if(r)r.checked=true;r=document.querySelector('input[name="pc"][value="3"]');if(r)r.checked=true;customSelects=[];renderCustomSelects();photoTags=[];renderPhotoTags();noticeCustomCols=[];renderNoticeCustomCols();menuCount=4;menuNames=['소개','서비스','공지사항','문의'];renderMenuInputs();lnbCount=4;lnbNames=['전체공지','일반공지','보도자료','행사안내'];renderLnbInputs();document.querySelectorAll('.sub').forEach(function(el){el.classList.remove('open');});document.querySelectorAll('.arr').forEach(function(el){el.classList.remove('open');});
+function resetAll(){document.querySelectorAll('input[type=checkbox]').forEach(function(el){el.checked=false;});document.querySelectorAll('input[type=radio]').forEach(function(el){el.checked=false;});['c-s-box','c-bn-pager','c-ph-pager','c-bl-pager','c-bl-sum','c-qna-badge','c-qna-pager','c-br-prev','c-br-thumb','c-pc-status','c-pc-date','c-pc-pager','c-pl-status','c-pl-date','c-pl-link','c-pl-pager','c-cal-list','c-hd-logo','c-ft-info'].forEach(function(id){var e=document.getElementById(id);if(e)e.checked=true;});var r;r=document.querySelector('input[name="hd-d"][value="1"]');if(r)r.checked=true;r=document.querySelector('input[name="sv"][value="img"]');if(r)r.checked=true;r=document.querySelector('input[name="lnb"][value="left"]');if(r)r.checked=true;r=document.querySelector('input[name="pc"][value="3"]');if(r)r.checked=true;customSelects=[];renderCustomSelects();photoTags=[];renderPhotoTags();blogTags=[];renderBlogTags();noticeCustomCols=[];renderNoticeCustomCols();pglistCustomCols=[];renderPglistCols();menuCount=4;menuNames=['소개','서비스','공지사항','문의'];renderMenuInputs();lnbCount=4;lnbNames=['전체공지','일반공지','보도자료','행사안내'];renderLnbInputs();faqCats=['전체','이용안내','결제','기타'];renderFaqCats();document.querySelectorAll('.sub').forEach(function(el){el.classList.remove('open');});document.querySelectorAll('.arr').forEach(function(el){el.classList.remove('open');});
   // 헤더, 상단 이미지 영역, 푸터 기본값 복원
   ['hd','sv','ft'].forEach(function(id){var chk=document.getElementById('c-'+id);if(chk)chk.checked=true;var sub=document.getElementById('s-'+id);var arr=document.getElementById('a-'+id);if(sub)sub.classList.add('open');if(arr)arr.classList.add('open');});
   document.getElementById('pf').innerHTML='<div class="empty"><div class="empty-icon">&#128196;</div><div>항목을 선택하고 [미리보기 생성]을 눌러주세요</div></div>';}
 function ts(id){var sub=document.getElementById('s-'+id);var arr=document.getElementById('a-'+id);if(!sub)return;var o=sub.classList.toggle('open');if(arr)arr.classList.toggle('open',o);}
 function tc(id){ts(id);}
 function sb(t){var r=document.getElementById('br-'+t);if(r){r.checked=true;obc();var sub=document.getElementById('s-b-'+t);if(sub&&!sub.classList.contains('open'))ts('b-'+t);}}
-function obc(){var sel=document.querySelector('input[name="bt"]:checked');var v=sel?sel.value:'';['notice','photo','blog','qna','faq','brochure','pgcard','calendar'].forEach(function(t){var sub=document.getElementById('s-b-'+t);var arr=document.getElementById('a-b-'+t);var on=v===t;if(sub){on?sub.classList.add('open'):sub.classList.remove('open');}if(arr)arr.classList.toggle('open',on);});}
+function obc(){var sel=document.querySelector('input[name="bt"]:checked');var v=sel?sel.value:'';['notice','photo','blog','qna','faq','brochure','pgcard','pglist','calendar'].forEach(function(t){var sub=document.getElementById('s-b-'+t);var arr=document.getElementById('a-b-'+t);var on=v===t;if(sub){on?sub.classList.add('open'):sub.classList.remove('open');}if(arr)arr.classList.toggle('open',on);});}
 
 // 페이지 로드 시 헤더, 상단 이미지 영역, 푸터 기본 활성화
 (function(){
@@ -446,6 +558,7 @@ function obc(){var sel=document.querySelector('input[name="bt"]:checked');var v=
   });
   renderMenuInputs();
   renderLnbInputs();
+  renderFaqCats();
 })();
 document.addEventListener('change',function(e){var inp=e.target;if(inp.type!=='checkbox'&&inp.type!=='radio')return;var sub=inp.closest('.sub');if(!sub)return;var key=sub.id.replace(/^s-/,'');var chk=document.getElementById('c-'+key);if(chk&&chk.type==='checkbox')chk.checked=true;});
 function h(id){var e=document.getElementById(id);return e&&e.checked;}
@@ -589,7 +702,11 @@ function gen(){
       {no:'249',t:'제목입니다.',cat:'교육',d:'2024.05.12',pin:false,attach:true,writer:'관리자',badge:false},
       {no:'248',t:'제목입니다.',cat:'기타안내',d:'2024.05.12',pin:false,attach:true,writer:'관리자',badge:false},
       {no:'247',t:'제목입니다.',cat:'기타안내',d:'2024.05.12',pin:false,attach:false,writer:'관리자',badge:false},
-      {no:'246',t:'제목입니다.',cat:'기타안내',d:'2024.05.12',pin:false,attach:false,writer:'관리자',badge:false}
+      {no:'246',t:'제목입니다.',cat:'기타안내',d:'2024.05.12',pin:false,attach:false,writer:'관리자',badge:false},
+      {no:'245',t:'제목입니다.',cat:'교육',d:'2024.05.11',pin:false,attach:false,writer:'관리자',badge:false},
+      {no:'244',t:'제목입니다.',cat:'기타안내',d:'2024.05.11',pin:false,attach:true,writer:'관리자',badge:false},
+      {no:'243',t:'제목입니다.',cat:'행사',d:'2024.05.10',pin:false,attach:false,writer:'관리자',badge:false},
+      {no:'242',t:'제목입니다.',cat:'기타안내',d:'2024.05.10',pin:false,attach:false,writer:'관리자',badge:false}
     ];
     var sC=h('c-bn-cat'),sT=h('c-bn-thumb'),sA=h('c-bn-attach'),sW=h('c-bn-writer'),sB=h('c-bn-badge');
     // 커스텀 컬럼 체크된 것만
@@ -600,7 +717,7 @@ function gen(){
     var nw='padding:9px 10px;font-weight:600;color:#444;text-align:center;white-space:nowrap;';
     var nwt='padding:9px 10px;color:#aaa;text-align:center;white-space:nowrap;';
     var b='<div style="margin:10px 0;">'+(pageTitle?'<div data-edit style="font-size:14px;font-weight:600;color:#222;margin-bottom:8px;">'+pageTitle+'</div>':'');
-    b+='<div style="font-size:12px;color:#888;margin-bottom:8px;">전체 251 | 현재페이지 1/26</div>';
+    b+='<div data-edit style="font-size:12px;color:#888;margin-bottom:8px;">전체 251 | 현재페이지 1/26</div>';
     b+='<table style="width:100%;border-collapse:collapse;background:#fff;border-top:2px solid #222;font-size:12px;"><thead><tr style="border-bottom:1px solid #e0e0e0;background:#fafafa;">';
     b+='<th style="'+nw+'">번호</th>';
     if(sC)b+='<th style="'+nw+'">카테고리</th>';
@@ -613,7 +730,7 @@ function gen(){
     b+='</tr></thead><tbody>';
     rows.forEach(function(r,ri){
       b+='<tr style="border-bottom:1px solid #f0f0f0;'+(r.pin?'background:#fafafa;':'')+'">';
-      b+='<td style="'+nwt+'color:'+(r.pin?'#aaa':'#666')+';">'+(r.pin?'&#128266;':r.no)+'</td>';
+      b+='<td data-edit style="'+nwt+'color:'+(r.pin?'#aaa':'#666')+';">'+(r.pin?'&#128266;':r.no)+'</td>';
       if(sC)b+='<td data-edit style="'+nwt+'">'+r.cat+'</td>';
       if(sT)b+='<td style="padding:9px 10px;text-align:center;"><div style="width:36px;height:36px;background:#ddd;border-radius:3px;margin:0 auto;"></div></td>';
       b+='<td data-edit style="padding:9px 10px;color:#222;">'+(sB&&r.badge?'<span style="background:#e8f5e9;color:#388e3c;font-size:10px;padding:1px 5px;border-radius:3px;margin-right:4px;">N</span>':'')+r.t+'</td>';
@@ -633,19 +750,190 @@ function gen(){
     cs.push(b);
   }
 
-  if(bt==='photo'){var col=rv('pc')||'3';var b='<div style="margin:10px 0;">'+(pageTitle?'<div data-edit style="font-size:14px;font-weight:600;color:#222;margin-bottom:12px;">'+pageTitle+'</div>':'')+'<div style="display:grid;grid-template-columns:repeat('+col+',1fr);gap:12px;">';for(var i=1;i<=parseInt(col)*2;i++){b+='<div style="background:#fff;border:1px solid #e0e0e0;border-radius:6px;overflow:hidden;">';b+='<div style="position:relative;width:100%;padding-top:75%;background:#ddd;">';if(h('c-ph-badge')&&i<=2)b+='<span style="position:absolute;top:8px;left:8px;background:#1a1a2e;color:#fff;font-size:10px;padding:2px 7px;border-radius:3px;z-index:1;">NEW</span>';b+='</div>';b+='<div style="padding:9px 11px;">';b+='<div style="font-size:13px;font-weight:600;color:#222;margin-bottom:5px;">사진 제목 '+i+'</div>';b+='<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px;"><span style="font-size:11px;color:#aaa;">2024.05.12</span>';if(h('c-ph-views'))b+='<span style="font-size:11px;color:#aaa;">&#128065; '+(i*137+83)+'</span>';if(h('c-ph-source'))b+='<span style="font-size:11px;color:#aaa;">출처: OOO</span>';b+='</div>';if(photoTags.length>0){b+='<div style="display:flex;gap:4px;flex-wrap:wrap;">';photoTags.forEach(function(tag){b+='<span style="background:#f0f4ff;color:#1a1a2e;font-size:10px;padding:2px 7px;border-radius:20px;">#'+tag+'</span>';});b+='</div>';}b+='</div></div>';}b+='</div></div>';cs.push(b);}
-  if(bt==='blog'){var b='<div style="margin:10px 0;">'+(pageTitle?'<div data-edit style="font-size:14px;font-weight:600;color:#222;margin-bottom:12px;">'+pageTitle+'</div>':'');[{t:'스타트업을 위한 UI 설계 가이드',d:'2024.05.10'},{t:'사용자 경험을 높이는 검색 설계',d:'2024.05.05'},{t:'공공기관 웹사이트 트렌드 2025',d:'2024.04.28'}].forEach(function(it){b+='<div style="display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #f0f0f0;">';if(h('c-bl-thumb'))b+='<div style="flex-shrink:0;width:80px;"><div style="width:80px;padding-top:75%;background:#ddd;border-radius:5px;"></div></div>';b+='<div style="flex:1;"><div style="font-size:13px;font-weight:600;color:#222;">'+it.t+'</div>'+(h('c-bl-sum')?'<div style="font-size:11px;color:#888;margin-top:3px;line-height:1.5;">본문 요약 텍스트가 이 위치에 2~3줄로 노출됩니다.</div>':'')+'<div style="display:flex;align-items:center;gap:6px;margin-top:4px;">'+(h('c-bl-tag')?'<span style="background:#f0f0f0;color:#666;font-size:10px;padding:1px 6px;border-radius:3px;">#태그</span>':'')+'<span style="font-size:10px;color:#aaa;">'+it.d+'</span></div></div></div>';});b+='</div>';cs.push(b);}
-  if(bt==='qna'){var sC2=h('c-qna-cat');var items=[{q:'서비스 이용 방법이 궁금합니다.',cat:'이용안내',ans:true,sec:false},{q:'회원가입이 안 됩니다.',cat:'계정',ans:false,sec:false},{q:'개인정보 처리 관련 문의드립니다.',cat:'기타',ans:true,sec:true}];var b='<div style="margin:10px 0;">'+(pageTitle?'<div data-edit style="font-size:14px;font-weight:600;color:#222;margin-bottom:12px;">'+pageTitle+'</div>':'')+'<table style="width:100%;border-collapse:collapse;background:#fff;border-top:2px solid #222;font-size:12px;"><thead><tr style="border-bottom:1px solid #e0e0e0;background:#fafafa;"><th style="padding:9px 10px;font-weight:600;color:#444;text-align:center;width:52px;">번호</th>'+(sC2?'<th style="padding:9px 10px;font-weight:600;color:#444;text-align:center;width:80px;">카테고리</th>':'')+'<th style="padding:9px 10px;font-weight:600;color:#444;text-align:center;">제목</th>'+(h('c-qna-badge')?'<th style="padding:9px 10px;font-weight:600;color:#444;text-align:center;width:80px;white-space:nowrap;">상태</th>':'')+'<th style="padding:9px 10px;font-weight:600;color:#444;text-align:center;width:90px;white-space:nowrap;">작성일</th></tr></thead><tbody>';items.forEach(function(it,i){b+='<tr style="border-bottom:1px solid #f0f0f0;cursor:pointer;" onclick="var ans=this.nextElementSibling;if(ans&&ans.classList.contains(\'ans-row\')){ans.style.display=ans.style.display===\'none\'?\'table-row\':\'none\';}"><td style="padding:12px 10px;text-align:center;color:#aaa;">'+(i+1)+'</td>'+(sC2?'<td style="padding:12px 10px;text-align:center;color:#666;">'+it.cat+'</td>':'')+'<td style="padding:12px 10px;color:#222;">'+it.q+(it.sec&&h('c-qna-secret')?' 🔒':'')+'</td>'+(h('c-qna-badge')?'<td style="padding:12px 10px;text-align:center;"><span style="display:inline-block;font-size:11px;padding:3px 8px;border-radius:3px;white-space:nowrap;'+(it.ans?'background:#e8f5e9;color:#388e3c;':'background:#fff3e0;color:#f57c00;')+'">'+(it.ans?'답변완료':'대기중')+'</span></td>':'')+'<td style="padding:12px 10px;text-align:center;color:#aaa;white-space:nowrap;">2024.05.12</td></tr>';if(it.ans){b+='<tr class="ans-row" style="display:none;background:#f9f9f9;border-bottom:1px solid #f0f0f0;"><td style="padding:0;" colspan="'+(2+(sC2?1:0)+(h('c-qna-badge')?1:0))+'"><div style="padding:14px 20px;font-size:12px;color:#555;line-height:1.7;border-left:3px solid #1a1a2e;margin:8px 12px;background:#fff;">↳ 문의 주셔서 감사합니다. 확인 후 빠르게 처리해드리겠습니다.</div></td></tr>';}});b+='</tbody></table></div>';cs.push(b);}
-  if(bt==='faq'){var faqTitle=(pageTitle?'<div data-edit style="font-size:14px;font-weight:600;color:#222;margin-bottom:12px;">'+pageTitle+'</div>':'');var faqs=[{q:'서비스는 어떻게 신청하나요?',a:'홈페이지 내 신청 메뉴를 통해 온라인으로 접수하실 수 있습니다.'},{q:'이용 요금은 어떻게 되나요?',a:'기본 서비스는 무료이며, 프리미엄 기능은 별도 문의 부탁드립니다.'},{q:'문의는 어디로 하면 되나요?',a:'고객센터(02-0000-0000) 또는 1:1 문의를 이용해 주세요.'}];var b='<div style="margin:10px 0;">'+(pageTitle?'<div data-edit style="font-size:14px;font-weight:600;color:#222;margin-bottom:12px;">'+pageTitle+'</div>':'');if(h('c-faq-cat'))b+='<div style="display:flex;gap:6px;margin-bottom:10px;">'+['전체','이용안내','결제','기타'].map(function(c,i){return '<span style="padding:4px 12px;border-radius:20px;font-size:11px;cursor:pointer;'+(i===0?'background:#1a1a2e;color:#fff;':'background:#f0f0f0;color:#555;')+'">'+c+'</span>';}).join('')+'</div>';faqs.forEach(function(f,i){b+='<div style="border:1px solid #e0e0e0;border-radius:5px;margin-bottom:5px;overflow:hidden;"><div style="display:flex;align-items:center;padding:10px 12px;cursor:pointer;background:#fff;" onclick="this.nextSibling.style.display=this.nextSibling.style.display===\'none\'?\'block\':\'none\'"><span style="color:#1a1a2e;font-weight:700;margin-right:8px;font-size:12px;">Q</span><span style="flex:1;font-size:12px;color:#222;">'+f.q+'</span><span style="font-size:14px;color:#aaa;">+</span></div><div style="display:'+(i===0?'block':'none')+';background:#f9f9f9;padding:10px 12px;border-top:1px solid #eee;"><span style="color:#888;font-weight:700;margin-right:8px;font-size:12px;">A</span><span style="font-size:12px;color:#555;">'+f.a+'</span></div></div>';});b+='</div>';cs.push(b);}
+  if(bt==='photo'){
+    var col=rv('pc')||'3';
+    var b='<div style="margin:10px 0;">';
+    if(pageTitle)b+='<div data-edit style="font-size:14px;font-weight:600;color:#222;margin-bottom:12px;">'+pageTitle+'</div>';
+    b+='<div data-edit style="font-size:12px;color:#888;margin-bottom:10px;">전체 251 | 현재페이지 1/26</div>';
+    b+='<div style="display:grid;grid-template-columns:repeat('+col+',1fr);gap:12px;">';
+    for(var i=1;i<=parseInt(col)*3;i++){
+      b+='<div style="background:#fff;border:1px solid #e0e0e0;border-radius:6px;overflow:hidden;">';
+      b+='<div style="position:relative;width:100%;padding-top:75%;background:#ddd;">';
+      if(h('c-ph-badge')&&i<=2)b+='<span style="position:absolute;top:8px;left:8px;background:#1a1a2e;color:#fff;font-size:10px;padding:2px 7px;border-radius:3px;z-index:1;">NEW</span>';
+      b+='</div>';
+      b+='<div style="padding:9px 11px;">';
+      b+='<div data-edit style="font-size:13px;font-weight:600;color:#222;margin-bottom:5px;">사진 제목 '+i+'</div>';
+      b+='<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px;">';
+      b+='<span data-edit style="font-size:11px;color:#aaa;">2024.05.12</span>';
+      if(h('c-ph-views'))b+='<span data-edit style="font-size:11px;color:#aaa;">&#128065; '+(i*137+83)+'</span>';
+      if(h('c-ph-source'))b+='<span data-edit style="font-size:11px;color:#aaa;">출처: OOO</span>';
+      b+='</div>';
+      if(photoTags.length>0){
+        b+='<div style="display:flex;gap:4px;flex-wrap:wrap;">';
+        photoTags.forEach(function(tag){b+='<span data-edit style="background:#f0f4ff;color:#1a1a2e;font-size:10px;padding:2px 7px;border-radius:20px;">#'+tag+'</span>';});
+        b+='</div>';
+      }
+      b+='</div></div>';
+    }
+    b+='</div>';
+    if(h('c-ph-pager')){
+      b+='<div style="display:flex;justify-content:center;gap:4px;margin-top:16px;">';
+      ['&lt;',1,2,3,4,5,'&gt;'].forEach(function(n,i){b+='<span style="width:28px;height:28px;border:1px solid '+(i===1?'#1a1a2e':'#ddd')+';border-radius:4px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;background:'+(i===1?'#1a1a2e':'#fff')+';color:'+(i===1?'#fff':'#555')+';">'+n+'</span>';});
+      b+='</div>';
+    }
+    b+='</div>';
+    cs.push(b);
+  }
+  if(bt==='blog'){
+    var items=[
+      {t:'스타트업을 위한 UI 설계 가이드',d:'2024.05.10'},
+      {t:'사용자 경험을 높이는 검색 설계',d:'2024.05.05'},
+      {t:'공공기관 웹사이트 트렌드 2025',d:'2024.04.28'},
+      {t:'모바일 퍼스트 디자인 전략',d:'2024.04.20'},
+      {t:'접근성을 고려한 UI 컴포넌트 설계',d:'2024.04.15'},
+      {t:'데이터 시각화 베스트 프랙티스',d:'2024.04.10'},
+      {t:'디자인 시스템 구축 가이드',d:'2024.04.05'},
+      {t:'사용자 조사 방법론 정리',d:'2024.03.28'},
+      {t:'반응형 레이아웃 설계 원칙',d:'2024.03.20'},
+      {t:'색상과 타이포그래피의 조화',d:'2024.03.15'}
+    ];
+    var activeBlogTags=blogTags.filter(function(_,i){var els=document.querySelectorAll('.blog-tag-chk');return !els[i]||els[i].checked;});
+    var b='<div style="margin:10px 0;">';
+    if(pageTitle)b+='<div data-edit style="font-size:14px;font-weight:600;color:#222;margin-bottom:12px;">'+pageTitle+'</div>';
+    b+='<div data-edit style="font-size:12px;color:#888;margin-bottom:10px;">전체 251 | 현재페이지 1/26</div>';
+    items.forEach(function(it){
+      b+='<div style="display:flex;gap:12px;align-items:flex-start;padding:14px 0;border-bottom:1px solid #f0f0f0;">';
+      if(h('c-bl-thumb'))b+='<div style="flex-shrink:0;width:100px;"><div style="width:100px;padding-top:75%;background:#ddd;border-radius:5px;"></div></div>';
+      b+='<div style="flex:1;">';
+      b+='<div data-edit style="font-size:14px;font-weight:600;color:#222;margin-bottom:5px;">'+it.t+'</div>';
+      if(h('c-bl-sum'))b+='<div data-edit style="font-size:12px;color:#888;margin-top:3px;line-height:1.6;margin-bottom:6px;">본문 요약 텍스트가 이 위치에 2~3줄로 노출됩니다.</div>';
+      b+='<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:4px;">';
+      if(h('c-bl-tag')){
+        if(activeBlogTags.length>0){
+          activeBlogTags.forEach(function(tag){b+='<span data-edit style="background:#f0f0f0;color:#555;font-size:11px;padding:2px 8px;border-radius:3px;">#'+tag+'</span>';});
+        } else {
+          b+='<span data-edit style="background:#f0f0f0;color:#555;font-size:11px;padding:2px 8px;border-radius:3px;">#태그</span>';
+        }
+      }
+      b+='<span data-edit style="font-size:11px;color:#aaa;">'+it.d+'</span>';
+      b+='</div></div></div>';
+    });
+    if(h('c-bl-pager')){
+      b+='<div style="display:flex;justify-content:center;gap:4px;margin-top:16px;">';
+      ['&lt;',1,2,3,4,5,'&gt;'].forEach(function(n,i){b+='<span style="width:28px;height:28px;border:1px solid '+(i===1?'#1a1a2e':'#ddd')+';border-radius:4px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;background:'+(i===1?'#1a1a2e':'#fff')+';color:'+(i===1?'#fff':'#555')+';">'+n+'</span>';});
+      b+='</div>';
+    }
+    b+='</div>';
+    cs.push(b);
+  }
+  if(bt==='qna'){
+    var sC2=h('c-qna-cat');
+    var items=[
+      {q:'서비스 이용 방법이 궁금합니다.',cat:'이용안내',ans:'문의 주셔서 감사합니다. 확인 후 빠르게 처리해드리겠습니다.',sec:false},
+      {q:'회원가입이 안 됩니다.',cat:'계정',ans:null,sec:false},
+      {q:'개인정보 처리 관련 문의드립니다.',cat:'기타',ans:'개인정보 처리와 관련하여 담당자가 확인 후 안내드리겠습니다.',sec:true},
+      {q:'비밀번호를 잊어버렸습니다.',cat:'계정',ans:null,sec:false},
+      {q:'결제 취소는 어떻게 하나요?',cat:'결제',ans:'결제 취소는 마이페이지 > 결제내역에서 가능합니다.',sec:false},
+      {q:'환불 규정이 어떻게 되나요?',cat:'결제',ans:null,sec:false},
+      {q:'서비스 이용 시간이 어떻게 되나요?',cat:'이용안내',ans:'24시간 365일 이용 가능합니다.',sec:false},
+      {q:'앱 다운로드는 어디서 하나요?',cat:'이용안내',ans:null,sec:false},
+      {q:'탈퇴 후 재가입이 가능한가요?',cat:'계정',ans:'탈퇴 후 30일 이후 재가입이 가능합니다.',sec:false},
+      {q:'이용 요금 청구서 발급이 가능한가요?',cat:'결제',ans:null,sec:false}
+    ];
+    var b='<div style="margin:10px 0;">';
+    if(pageTitle)b+='<div data-edit style="font-size:14px;font-weight:600;color:#222;margin-bottom:12px;">'+pageTitle+'</div>';
+    b+='<div data-edit style="font-size:12px;color:#888;margin-bottom:10px;">전체 3 | 현재페이지 1/1</div>';
+    b+='<table style="width:100%;border-collapse:collapse;background:#fff;border-top:2px solid #222;font-size:12px;">';
+    b+='<thead><tr style="border-bottom:1px solid #e0e0e0;background:#fafafa;">';
+    b+='<th style="padding:9px 10px;font-weight:600;color:#444;text-align:center;white-space:nowrap;">번호</th>';
+    if(sC2)b+='<th style="padding:9px 10px;font-weight:600;color:#444;text-align:center;white-space:nowrap;">카테고리</th>';
+    b+='<th style="padding:9px 10px;font-weight:600;color:#444;text-align:center;">제목</th>';
+    if(h('c-qna-badge'))b+='<th style="padding:9px 10px;font-weight:600;color:#444;text-align:center;width:80px;white-space:nowrap;">상태</th>';
+    b+='<th style="padding:9px 10px;font-weight:600;color:#444;text-align:center;white-space:nowrap;">작성일</th>';
+    b+='</tr></thead><tbody>';
+    items.forEach(function(it,i){
+      b+='<tr style="border-bottom:1px solid #f0f0f0;background:#fff;">';
+      b+='<td data-edit style="padding:12px 10px;text-align:center;color:#aaa;">'+(i+1)+'</td>';
+      if(sC2)b+='<td data-edit style="padding:12px 10px;text-align:center;color:#666;">'+it.cat+'</td>';
+      b+='<td data-edit style="padding:12px 10px;color:#222;">'+it.q+(it.sec&&h('c-qna-secret')?' 🔒':'')+'</td>';
+      if(h('c-qna-badge'))b+='<td style="padding:12px 10px;text-align:center;position:relative;"><div class="status-wrap" style="position:relative;display:inline-block;"><span class="status-badge" onclick="toggleStatus(this)" style="display:inline-block;font-size:11px;padding:3px 8px;border-radius:3px;white-space:nowrap;cursor:pointer;'+(it.ans?'background:#e8f5e9;color:#388e3c;':'background:#fff3e0;color:#f57c00;')+'">'+(it.ans?'답변완료':'대기중')+'</span><div class="status-drop" style="display:none;position:absolute;top:100%;left:50%;transform:translateX(-50%);background:#fff;border:1px solid #e0e0e0;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,0.1);z-index:100;min-width:90px;overflow:hidden;margin-top:4px;"><div onclick="setStatus(this,\'답변완료\',\'#e8f5e9\',\'#388e3c\')" style="padding:8px 14px;font-size:12px;color:#388e3c;cursor:pointer;background:#fff;">✔ 답변완료</div><div onclick="setStatus(this,\'대기중\',\'#fff3e0\',\'#f57c00\')" style="padding:8px 14px;font-size:12px;color:#f57c00;cursor:pointer;background:#fff;border-top:1px solid #f5f5f5;">⏳ 대기중</div></div></div></td>';
+      b+='<td data-edit style="padding:12px 10px;text-align:center;color:#aaa;white-space:nowrap;">2024.05.12</td>';
+      b+='</tr>';
+    });
+    b+='</tbody></table>';
+    if(h('c-qna-pager')){
+      b+='<div style="display:flex;justify-content:center;gap:4px;margin-top:16px;">';
+      ['&lt;',1,2,3,4,5,'&gt;'].forEach(function(n,i){b+='<span style="width:28px;height:28px;border:1px solid '+(i===1?'#1a1a2e':'#ddd')+';border-radius:4px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;background:'+(i===1?'#1a1a2e':'#fff')+';color:'+(i===1?'#fff':'#555')+';">'+n+'</span>';});
+      b+='</div>';
+    }
+    b+='</div>';
+    cs.push(b);
+  }
+
+  if(bt==='faq'){
+    var cats=faqCats;
+    var faqs=[
+      {q:'서비스는 어떻게 신청하나요?',a:'홈페이지 내 신청 메뉴를 통해 온라인으로 접수하실 수 있습니다.',cat:faqCats[1]||'이용안내'},
+      {q:'이용 요금은 어떻게 되나요?',a:'기본 서비스는 무료이며, 프리미엄 기능은 별도 문의 부탁드립니다.',cat:faqCats[2]||'결제'},
+      {q:'문의는 어디로 하면 되나요?',a:'고객센터(02-0000-0000) 또는 1:1 문의를 이용해 주세요.',cat:faqCats[3]||'기타'},
+      {q:'비밀번호를 변경하고 싶습니다.',a:'마이페이지 > 계정 설정에서 변경하실 수 있습니다.',cat:faqCats[1]||'이용안내'},
+      {q:'환불은 어떻게 신청하나요?',a:'결제 후 7일 이내 고객센터로 문의해 주시면 처리해드립니다.',cat:faqCats[2]||'결제'},
+      {q:'앱은 어디서 다운로드하나요?',a:'앱스토어 또는 구글플레이에서 서비스명으로 검색하세요.',cat:faqCats[1]||'이용안내'},
+      {q:'회원 탈퇴는 어떻게 하나요?',a:'마이페이지 > 계정 설정 > 탈퇴 메뉴를 이용해 주세요.',cat:faqCats[3]||'기타'},
+      {q:'결제 수단은 어떤 것이 있나요?',a:'신용카드, 계좌이체, 간편결제를 지원합니다.',cat:faqCats[2]||'결제'},
+      {q:'서비스 이용 시간은 어떻게 되나요?',a:'연중무휴 24시간 이용 가능합니다.',cat:faqCats[1]||'이용안내'},
+      {q:'개인정보는 어떻게 관리되나요?',a:'개인정보처리방침에 따라 안전하게 관리됩니다.',cat:faqCats[3]||'기타'}
+    ];
+    var b='<div style="margin:10px 0;">';
+    if(pageTitle)b+='<div data-edit style="font-size:14px;font-weight:600;color:#222;margin-bottom:12px;">'+pageTitle+'</div>';
+    // 카테고리 탭
+    if(h('c-faq-cat')){
+      b+='<div style="display:flex;gap:6px;margin-bottom:14px;">';
+      cats.forEach(function(c,i){
+        b+='<span data-edit style="padding:5px 14px;border-radius:20px;font-size:12px;cursor:pointer;'+(i===0?'background:#1a1a2e;color:#fff;':'background:#f0f0f0;color:#555;')+'">'+c+'</span>';
+      });
+      b+='</div>';
+    }
+    // FAQ 아이템
+    faqs.forEach(function(f,i){
+      b+='<div style="border:1px solid #e0e0e0;border-radius:6px;margin-bottom:6px;position:relative;">';
+      // 질문 헤더
+      b+='<div class="faq-hd" style="display:flex;align-items:center;padding:14px 16px;cursor:pointer;background:#fff;gap:10px;">';
+      if(h('c-faq-cat')){
+        // 카테고리 드롭다운
+        var catOpts=faqCats.filter(function(c){return c!=='전체';});
+        b+='<div class="faq-cat-wrap" style="position:relative;flex-shrink:0;" onclick="event.stopPropagation();">';
+        b+='<span class="faq-cat-badge" onclick="toggleFaqCat(this)" style="font-size:11px;padding:2px 8px;border-radius:3px;background:#f0f4ff;color:#1a1a2e;white-space:nowrap;cursor:pointer;user-select:none;">'+f.cat+'</span>';
+        b+='<div class="faq-cat-drop" style="display:none;position:absolute;top:100%;left:0;background:#fff;border:1px solid #e0e0e0;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,0.1);z-index:500;min-width:100px;max-height:114px;overflow-y:auto;margin-top:4px;">';
+        catOpts.forEach(function(c){
+          b+='<div class="faq-cat-opt" data-cat="'+c+'" style="padding:7px 14px;font-size:12px;color:#333;cursor:pointer;white-space:nowrap;'+(c===f.cat?'background:#f0f4ff;color:#1a1a2e;font-weight:600;':'')+'">'+c+'</div>';
+        });
+        b+='</div></div>';
+      }
+      b+='<span style="color:#1a1a2e;font-weight:700;font-size:13px;flex-shrink:0;">Q.</span>';
+      b+='<span data-edit style="flex:1;font-size:13px;color:#222;line-height:1.5;">'+f.q+'</span>';
+      b+='<span class="faq-ico" style="font-size:18px;color:#aaa;flex-shrink:0;transition:transform 0.2s;">'+(i===0?'−':'+')+'</span>';
+      b+='</div>';
+      // 답변 (첫 번째만 기본 열림)
+      b+='<div class="faq-bd" style="display:'+(i===0?'block':'none')+';background:#fafafa;padding:14px 16px;border-top:1px solid #f0f0f0;">';
+      b+='<div style="display:flex;gap:10px;">';
+      b+='<span style="color:#888;font-weight:700;font-size:13px;flex-shrink:0;">A.</span>';
+      b+='<span data-edit style="font-size:13px;color:#555;line-height:1.7;">'+f.a+'</span>';
+      b+='</div></div></div>';
+    });
+    b+='</div>';
+    cs.push(b);
+  }
+
   if(bt==='brochure'){
   var brCol=rv('br-col')||'4';
   var tit='브로슈어 국문브로슈어 국문브로슈어 국문브로슈어 국문브로슈어 국문';
-  var items=[tit,tit,tit,tit,tit,tit,tit,tit];
+  var items=[tit,tit,tit,tit,tit,tit,tit,tit,tit,tit,tit,tit];
   var b='<div style="margin:10px 0;">'+(pageTitle?'<div data-edit style="font-size:14px;font-weight:600;color:#222;margin-bottom:12px;">'+pageTitle+'</div>':'');
   b+='<div style="font-size:12px;color:#888;margin-bottom:14px;">전체 251 | 현재페이지 1/26</div>';
   if(brCol==='2'){
     b+='<div class="br-grid col2">';
-    items.slice(0,4).forEach(function(t){
+    items.slice(0,6).forEach(function(t){
       b+='<div style="display:flex;gap:16px;background:#fff;align-items:flex-start;">';
       b+='<div style="flex-shrink:0;width:40%;"><div style="position:relative;width:100%;padding-top:133%;background:#ddd;"><span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#bbb;font-size:12px;">{thum}</span></div></div>';
       b+='<div style="flex:1;padding:4px 0;">';
@@ -658,7 +946,7 @@ function gen(){
   } else {
     // 4열: 세로 카드 레이아웃
     b+='<div class="br-grid col'+brCol+'">';
-    items.slice(0,8).forEach(function(t){
+    items.slice(0,12).forEach(function(t){
       b+='<div style="background:#fff;">';
       b+='<div style="position:relative;width:100%;padding-top:133%;background:#ddd;"><span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#bbb;font-size:12px;">{thum}</span></div>';
       b+='<div style="padding:12px 0 16px;">';
@@ -674,7 +962,103 @@ function gen(){
   b+='</div>';
   cs.push(b);
 }
-  if(bt==='pgcard'){var b='<div style="margin:10px 0;">'+(pageTitle?'<div data-edit style="font-size:14px;font-weight:600;color:#222;margin-bottom:12px;">'+pageTitle+'</div>':'')+'<div style="" <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">';[{t:'봄철 환경교육 프로그램',s:'모집중',p:'3/25~4/10'},{t:'청소년 리더십 캠프',s:'마감',p:'4/1~4/5'},{t:'지역주민 건강강좌',s:'모집중',p:'4/15~5/30'}].forEach(function(p){b+='<div style="background:#fff;border:1px solid #e0e0e0;border-radius:6px;overflow:hidden;"><div style="position:relative;width:100%;padding-top:75%;background:#ddd;">'+(h('c-pc-status')?'<span style="position:absolute;top:7px;left:7px;z-index:1;font-size:10px;padding:2px 7px;border-radius:3px;'+(p.s==='모집중'?'background:#1a1a2e;color:#fff;':'background:#aaa;color:#fff;')+'">'+p.s+'</span>':'')+'</div><div style="padding:8px 10px;"><div style="font-size:12px;font-weight:600;color:#222;">'+p.t+'</div>'+(h('c-pc-date')?'<div style="font-size:11px;color:#aaa;margin-top:3px;">'+p.p+'</div>':'')+'</div></div>';});b+='</div></div>';cs.push(b);}
+  if(bt==='pgcard'){
+    var pgCol=rv('pgcol')||'3';
+    var pgItems=[
+      {t:'봄철 환경교육 프로그램',s:'모집중',p:'3/25~4/10'},
+      {t:'청소년 리더십 캠프',s:'마감',p:'4/1~4/5'},
+      {t:'지역주민 건강강좌',s:'모집중',p:'4/15~5/30'},
+      {t:'IT 기초능력 배양 과정',s:'모집중',p:'4/20~5/20'},
+      {t:'창업 아이디어 경진대회',s:'마감',p:'3/1~3/31'},
+      {t:'환경보전 자원봉사',s:'모집중',p:'5/1~5/31'},
+      {t:'글로벌 리더 양성 프로그램',s:'모집중',p:'5/10~6/10'},
+      {t:'지역사회 문화 탐방',s:'마감',p:'4/5~4/6'},
+      {t:'청년 창업 멘토링 과정',s:'모집중',p:'5/15~6/15'},
+      {t:'디지털 역량 강화 교육',s:'모집중',p:'5/20~6/20'},
+      {t:'지역 문화예술 아카데미',s:'마감',p:'4/10~4/30'},
+      {t:'환경 생태 체험 프로그램',s:'모집중',p:'6/1~6/30'}
+    ];
+    var showCount=parseInt(pgCol)*3;
+    var b='<div style="margin:10px 0;">';
+    if(pageTitle)b+='<div data-edit style="font-size:14px;font-weight:600;color:#222;margin-bottom:12px;">'+pageTitle+'</div>';
+    b+='<div data-edit style="font-size:12px;color:#888;margin-bottom:10px;">전체 251 | 현재페이지 1/26</div>';
+    b+='<div style="display:grid;grid-template-columns:repeat('+pgCol+',1fr);gap:14px;">';
+    pgItems.slice(0,showCount).forEach(function(p){
+      b+='<div style="background:#fff;border:1px solid #e0e0e0;border-radius:6px;overflow:hidden;">';
+      b+='<div style="position:relative;width:100%;padding-top:75%;background:#ddd;">';
+      if(h('c-pc-status'))b+='<div class="status-wrap" style="position:absolute;top:8px;left:8px;z-index:10;"><span class="status-badge" onclick="toggleStatus(this)" style="display:inline-block;font-size:11px;padding:3px 8px;border-radius:3px;cursor:pointer;white-space:nowrap;'+(p.s==='모집중'?'background:#1a1a2e;color:#fff;':'background:#aaa;color:#fff;')+'">'+p.s+'</span><div class="status-drop" style="display:none;position:absolute;top:100%;left:0;background:#fff;border:1px solid #e0e0e0;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,0.1);z-index:100;min-width:80px;overflow:hidden;margin-top:4px;"><div class="status-opt" data-label="모집중" data-bg="#1a1a2e" data-color="#fff" style="padding:7px 14px;font-size:12px;color:#1a1a2e;cursor:pointer;">✔ 모집중</div><div class="status-opt" data-label="마감" data-bg="#aaa" data-color="#fff" style="padding:7px 14px;font-size:12px;color:#888;cursor:pointer;border-top:1px solid #f5f5f5;">✕ 마감</div></div></div>';
+      b+='</div>';
+      b+='<div style="padding:10px 12px;">';
+      b+='<div data-edit style="font-size:13px;font-weight:600;color:#222;margin-bottom:4px;">'+p.t+'</div>';
+      if(h('c-pc-date'))b+='<div data-edit style="font-size:12px;color:#aaa;">'+p.p+'</div>';
+      b+='</div></div>';
+    });
+    b+='</div>';
+    if(h('c-pc-pager')){
+      b+='<div style="display:flex;justify-content:center;gap:4px;margin-top:16px;">';
+      ['&lt;',1,2,3,4,5,'&gt;'].forEach(function(n,i){b+='<span style="width:28px;height:28px;border:1px solid '+(i===1?'#1a1a2e':'#ddd')+';border-radius:4px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;background:'+(i===1?'#1a1a2e':'#fff')+';color:'+(i===1?'#fff':'#555')+';">'+n+'</span>';});
+      b+='</div>';
+    }
+    b+='</div>';
+    cs.push(b);
+  }
+
+  if(bt==='pglist'){
+    var nw='padding:9px 10px;font-weight:600;color:#444;text-align:center;white-space:nowrap;';
+    var nwt='padding:9px 10px;color:#aaa;text-align:center;white-space:nowrap;';
+    var plItems=[
+      {no:251,t:'제목입니다.',d:'2024.05.12',s:'모집중'},
+      {no:250,t:'제목입니다.',d:'2024.05.12',s:'마감'},
+      {no:249,t:'제목입니다.',d:'2024.05.12',s:'모집중'},
+      {no:248,t:'제목입니다.',d:'2024.05.12',s:'모집중'},
+      {no:247,t:'제목입니다.',d:'2024.05.12',s:'마감'},
+      {no:246,t:'제목입니다.',d:'2024.05.11',s:'모집중'},
+      {no:245,t:'제목입니다.',d:'2024.05.11',s:'모집중'},
+      {no:244,t:'제목입니다.',d:'2024.05.10',s:'마감'},
+      {no:243,t:'제목입니다.',d:'2024.05.10',s:'모집중'},
+      {no:242,t:'제목입니다.',d:'2024.05.09',s:'모집중'}
+    ];
+    var customColEls=document.querySelectorAll('.pglist-col-chk');
+    var activeCols=pglistCustomCols.filter(function(_,i){return !customColEls[i]||customColEls[i].checked;});
+    var b='<div style="margin:10px 0;">';
+    if(pageTitle)b+='<div data-edit style="font-size:14px;font-weight:600;color:#222;margin-bottom:12px;">'+pageTitle+'</div>';
+    b+='<div data-edit style="font-size:12px;color:#888;margin-bottom:10px;">전체 251 | 현재페이지 1/26</div>';
+    b+='<table style="width:100%;border-collapse:collapse;background:#fff;border-top:2px solid #222;font-size:12px;">';
+    b+='<thead><tr style="border-bottom:1px solid #e0e0e0;background:#fafafa;">';
+    b+='<th style="'+nw+'">번호</th>';
+    b+='<th style="padding:9px 10px;font-weight:600;color:#444;text-align:center;width:100%;">제목</th>';
+    if(h('c-pl-status'))b+='<th style="'+nw+'">모집현황</th>';
+    if(h('c-pl-date'))b+='<th style="'+nw+'">등록일</th>';
+    activeCols.forEach(function(col){b+='<th style="'+nw+'">'+col+'</th>';});
+    if(h('c-pl-link'))b+='<th style="'+nw+'">바로가기</th>';
+    b+='</tr></thead><tbody>';
+    plItems.forEach(function(it){
+      b+='<tr style="border-bottom:1px solid #f0f0f0;">';
+      b+='<td data-edit style="'+nwt+'">'+it.no+'</td>';
+      b+='<td data-edit style="padding:9px 10px;color:#222;">'+it.t+'</td>';
+      if(h('c-pl-status')){
+        b+='<td style="'+nwt+'"><div class="status-wrap" style="position:relative;display:inline-block;">'
+          +'<span class="status-badge" onclick="toggleStatus(this)" style="display:inline-block;font-size:11px;padding:3px 8px;border-radius:3px;white-space:nowrap;cursor:pointer;'+(it.s==='모집중'?'background:#e8f5e9;color:#388e3c;':'background:#f0f0f0;color:#888;')+'">'+it.s+'</span>'
+          +'<div class="status-drop" style="display:none;position:absolute;top:100%;left:50%;transform:translateX(-50%);background:#fff;border:1px solid #e0e0e0;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,0.1);z-index:100;min-width:80px;overflow:hidden;margin-top:4px;">'
+          +'<div class="status-opt" data-label="모집중" data-bg="#e8f5e9" data-color="#388e3c" style="padding:7px 14px;font-size:12px;color:#388e3c;cursor:pointer;">✔ 모집중</div>'
+          +'<div class="status-opt" data-label="마감" data-bg="#f0f0f0" data-color="#888" style="padding:7px 14px;font-size:12px;color:#888;cursor:pointer;border-top:1px solid #f5f5f5;">✕ 마감</div>'
+          +'</div></div></td>';
+      }
+      if(h('c-pl-date'))b+='<td data-edit style="'+nwt+'">'+it.d+'</td>';
+      activeCols.forEach(function(){b+='<td data-edit style="'+nwt+'">-</td>';});
+      if(h('c-pl-link'))b+='<td style="'+nwt+'"><button style="font-size:11px;padding:4px 10px;background:#555;color:#fff;border:none;border-radius:3px;cursor:pointer;">링크이동</button></td>';
+      b+='</tr>';
+    });
+    b+='</tbody></table>';
+    if(h('c-pl-pager')){
+      b+='<div style="display:flex;justify-content:center;gap:4px;margin-top:16px;">';
+      ['«','‹',1,2,3,4,5,6,7,8,9,10,'›','»'].forEach(function(n,i){b+='<span style="width:28px;height:28px;border:1px solid '+(i===2?'#1a1a2e':'#ddd')+';border-radius:4px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;background:'+(i===2?'#1a1a2e':'#fff')+';color:'+(i===2?'#fff':'#555')+';">'+n+'</span>';});
+      b+='</div>';
+    }
+    b+='</div>';
+    cs.push(b);
+  }
+
   if(bt==='calendar'){
     var calView=rv('cal-view')||'grid';
     var b='<div style="margin:10px 0;">'+(pageTitle?'<div data-edit style="font-size:14px;font-weight:600;color:#222;margin-bottom:12px;">'+pageTitle+'</div>':'');
@@ -769,8 +1153,62 @@ function gen(){
     +'  item.addEventListener("mouseenter",function(){sub.style.display=sub.classList.contains("side-panel")?"flex":"block";});'
     +'  item.addEventListener("mouseleave",function(){sub.style.display="none";});'
     +'});<\/script>';
+  var faqScript='<script>'
+    +'function toggleFaqCat(badge){'
+    +'  var drop=badge.nextElementSibling;'
+    +'  var isOpen=drop.style.display==="block";'
+    +'  document.querySelectorAll(".faq-cat-drop").forEach(function(d){d.style.display="none";});'
+    +'  drop.style.display=isOpen?"none":"block";'
+    +'}'
+    +'document.addEventListener("click",function(e){'
+    +'  var opt=e.target.closest(".faq-cat-opt");'
+    +'  if(opt){'
+    +'    var label=opt.dataset.cat;'
+    +'    var drop=opt.parentNode;'
+    +'    var badge=drop.previousElementSibling;'
+    +'    badge.textContent=label;'
+    +'    drop.querySelectorAll(".faq-cat-opt").forEach(function(d){d.style.background="";d.style.color="#333";d.style.fontWeight="";});'
+    +'    opt.style.background="#f0f4ff";opt.style.color="#1a1a2e";opt.style.fontWeight="600";'
+    +'    drop.style.display="none";'
+    +'    return;'
+    +'  }'
+    +'  if(!e.target.closest(".faq-cat-wrap")){'
+    +'    document.querySelectorAll(".faq-cat-drop").forEach(function(d){d.style.display="none";});'
+    +'  }'
+    +'});'
+    +'document.querySelectorAll(".faq-hd").forEach(function(hd){'
+    +'  hd.addEventListener("click",function(){'
+    +'    var bd=hd.nextElementSibling;'
+    +'    var ico=hd.querySelector(".faq-ico");'
+    +'    var open=bd.style.display==="block";'
+    +'    bd.style.display=open?"none":"block";'
+    +'    if(ico)ico.textContent=open?"+":"−";'
+    +'  });'
+    +'});<\/script>';
+  var statusScript='<script>'
+    +'function toggleStatus(badge){'
+    +'  var drop=badge.nextElementSibling;'
+    +'  var isOpen=drop.style.display==="block";'
+    +'  document.querySelectorAll(".status-drop").forEach(function(d){d.style.display="none";});'
+    +'  drop.style.display=isOpen?"none":"block";'
+    +'}'
+    +'document.addEventListener("click",function(e){'
+    +'  var opt=e.target.closest(".status-opt");'
+    +'  if(opt){'
+    +'    var drop=opt.parentNode;'
+    +'    var badge=drop.previousElementSibling;'
+    +'    badge.textContent=opt.dataset.label;'
+    +'    badge.style.background=opt.dataset.bg;'
+    +'    badge.style.color=opt.dataset.color;'
+    +'    drop.style.display="none";'
+    +'    return;'
+    +'  }'
+    +'  if(!e.target.closest(".status-wrap")){'
+    +'    document.querySelectorAll(".status-drop").forEach(function(d){d.style.display="none";});'
+    +'  }'
+    +'});<\/script>';
   var editableScript='<script>document.querySelectorAll("[data-edit]").forEach(function(el){el.setAttribute("contenteditable","true");el.classList.add("editable");});<\/script>';
-  var html='<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>*{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif;}body{background:#f5f5f5;color:#222;font-size:14px;}.content-wrap{padding:0 40px;}.br-grid{display:grid;gap:24px 20px;justify-content:center;}.br-grid.col4{grid-template-columns:repeat(4,minmax(0,260px));}.br-grid.col2{grid-template-columns:repeat(2,minmax(0,400px));}.br-card-title{font-size:14px;color:#222;line-height:1.6;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}.br-btns{display:flex;flex-direction:row;flex-wrap:wrap;gap:6px;}.br-btns .br-btn{flex:1;min-width:60px;white-space:nowrap;}.br-btn{padding:8px 18px;font-size:13px;border:1px solid #bbb;border-radius:2px;background:#fff;color:#333;cursor:pointer;white-space:nowrap;}'+editableStyle+'</style></head><body>'+sec.join('')+navHoverScript+editableScript+'</body></html>';
+  var html='<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>*{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif;}body{background:#f5f5f5;color:#222;font-size:14px;}.content-wrap{padding:0 40px;}.br-grid{display:grid;gap:24px 20px;}.br-grid.col4{grid-template-columns:repeat(4,1fr);}.br-grid.col2{grid-template-columns:repeat(2,1fr);}.br-card-title{font-size:14px;color:#222;line-height:1.6;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}.br-btns{display:flex;flex-direction:row;flex-wrap:wrap;gap:6px;}.br-btns .br-btn{flex:1;min-width:60px;white-space:nowrap;}.br-btn{padding:8px 18px;font-size:13px;border:1px solid #bbb;border-radius:2px;background:#fff;color:#333;cursor:pointer;white-space:nowrap;}'+editableStyle+'</style></head><body>'+sec.join('')+navHoverScript+faqScript+statusScript+editableScript+'</body></html>';
   var frame=document.getElementById('pf');frame.innerHTML='<iframe id="pif" srcdoc=""></iframe>';
   // 이미지 저장 버튼 표시
   var dlBtn=document.getElementById('btn-download');
