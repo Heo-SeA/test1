@@ -128,6 +128,14 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f4
             <label class="opt"><input type="radio" name="lnb" value="left" checked> 좌측 LNB</label>
             <label class="opt"><input type="radio" name="lnb" value="right"> 우측 LNB</label>
             <label class="opt"><input type="radio" name="lnb" value="tab"> 상단 탭형</label>
+            <div class="st" style="margin-top:6px;">메뉴 개수</div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <button onclick="changeLnbCount(-1)" style="width:28px;height:28px;border:1px solid #ddd;border-radius:5px;background:#fff;font-size:16px;cursor:pointer;color:#555;display:flex;align-items:center;justify-content:center;flex-shrink:0;">−</button>
+              <span id="lnb-count-display" style="font-size:13px;font-weight:600;color:#222;min-width:20px;text-align:center;">4</span>
+              <button onclick="changeLnbCount(1)" style="width:28px;height:28px;border:1px solid #ddd;border-radius:5px;background:#fff;font-size:16px;cursor:pointer;color:#555;display:flex;align-items:center;justify-content:center;flex-shrink:0;">+</button>
+            </div>
+            <div class="st" style="margin-top:6px;">메뉴명</div>
+            <div id="lnb-name-inputs"></div>
             <div class="st" style="color:#aaa;font-size:10px;margin-top:4px;">※ 미리보기에서 직접 클릭해서 수정하세요</div>
           </div>
         </div>
@@ -335,6 +343,31 @@ var photoTags=[];
 var noticeCustomCols=[];
 var menuCount=4;
 var menuNames=['소개','서비스','공지사항','문의'];
+var lnbCount=4;
+var lnbNames=['전체공지','일반공지','보도자료','행사안내'];
+
+function renderLnbInputs(){
+  var wrap=document.getElementById('lnb-name-inputs');
+  if(!wrap)return;
+  wrap.innerHTML='';
+  for(var i=0;i<lnbCount;i++){
+    var row=document.createElement('div');
+    row.style.cssText='display:flex;align-items:center;gap:5px;margin-bottom:4px;';
+    row.innerHTML='<span style="font-size:11px;color:#aaa;min-width:14px;text-align:right;">'+(i+1)+'</span>'
+      +'<input type="text" data-lnb-idx="'+i+'" value="'+(lnbNames[i]||'메뉴'+(i+1))+'" placeholder="메뉴명" '
+      +'style="flex:1;border:1px solid #e0e0e0;border-radius:5px;padding:4px 7px;font-size:12px;color:#222;" '
+      +'oninput="lnbNames['+i+']=this.value">';
+    wrap.appendChild(row);
+  }
+  var disp=document.getElementById('lnb-count-display');
+  if(disp)disp.textContent=lnbCount;
+}
+
+function changeLnbCount(delta){
+  lnbCount=Math.max(1,Math.min(10,lnbCount+delta));
+  for(var i=lnbNames.length;i<lnbCount;i++)lnbNames.push('메뉴'+(i+1));
+  renderLnbInputs();
+}
 
 function renderMenuInputs(){
   var wrap=document.getElementById('menu-name-inputs');
@@ -358,6 +391,7 @@ function changeMenuCount(delta){
   // 새 메뉴는 기본값으로 채우기
   for(var i=menuNames.length;i<menuCount;i++)menuNames.push('메뉴'+(i+1));
   renderMenuInputs();
+  renderLnbInputs();
 }
 
 function addNoticeCol(){
@@ -391,7 +425,7 @@ function removePhotoTag(i){photoTags.splice(i,1);renderPhotoTags();}
 function addCustomSelect(){var inp=document.getElementById('custom-select-input');var val=inp.value.trim();if(!val)return;customSelects.push(val);inp.value='';renderCustomSelects();var cs=document.getElementById('c-s');if(cs)cs.checked=true;}
 function renderCustomSelects(){var wrap=document.getElementById('custom-selects');if(!wrap)return;wrap.innerHTML='';customSelects.forEach(function(name,i){var row=document.createElement('div');row.className='opt';row.style.justifyContent='space-between';row.innerHTML='<label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;flex:1;"><input type="checkbox" class="custom-chk" data-idx="'+i+'" checked style="width:13px;height:13px;accent-color:#1a1a2e;"> '+name+' 셀렉트</label><span onclick="removeCustomSelect('+i+')" style="font-size:11px;color:#ccc;cursor:pointer;padding:0 4px;">✕</span>';wrap.appendChild(row);});}
 function removeCustomSelect(i){customSelects.splice(i,1);renderCustomSelects();}
-function resetAll(){document.querySelectorAll('input[type=checkbox]').forEach(function(el){el.checked=false;});document.querySelectorAll('input[type=radio]').forEach(function(el){el.checked=false;});['c-s-box','c-bn-pager','c-bl-sum','c-qna-badge','c-br-prev','c-br-thumb','c-pc-status','c-pc-date','c-cal-list','c-hd-logo','c-ft-info'].forEach(function(id){var e=document.getElementById(id);if(e)e.checked=true;});var r;r=document.querySelector('input[name="hd-d"][value="1"]');if(r)r.checked=true;r=document.querySelector('input[name="sv"][value="img"]');if(r)r.checked=true;r=document.querySelector('input[name="lnb"][value="left"]');if(r)r.checked=true;r=document.querySelector('input[name="pc"][value="3"]');if(r)r.checked=true;customSelects=[];renderCustomSelects();photoTags=[];renderPhotoTags();noticeCustomCols=[];renderNoticeCustomCols();menuCount=4;menuNames=['소개','서비스','공지사항','문의'];renderMenuInputs();document.querySelectorAll('.sub').forEach(function(el){el.classList.remove('open');});document.querySelectorAll('.arr').forEach(function(el){el.classList.remove('open');});
+function resetAll(){document.querySelectorAll('input[type=checkbox]').forEach(function(el){el.checked=false;});document.querySelectorAll('input[type=radio]').forEach(function(el){el.checked=false;});['c-s-box','c-bn-pager','c-bl-sum','c-qna-badge','c-br-prev','c-br-thumb','c-pc-status','c-pc-date','c-cal-list','c-hd-logo','c-ft-info'].forEach(function(id){var e=document.getElementById(id);if(e)e.checked=true;});var r;r=document.querySelector('input[name="hd-d"][value="1"]');if(r)r.checked=true;r=document.querySelector('input[name="sv"][value="img"]');if(r)r.checked=true;r=document.querySelector('input[name="lnb"][value="left"]');if(r)r.checked=true;r=document.querySelector('input[name="pc"][value="3"]');if(r)r.checked=true;customSelects=[];renderCustomSelects();photoTags=[];renderPhotoTags();noticeCustomCols=[];renderNoticeCustomCols();menuCount=4;menuNames=['소개','서비스','공지사항','문의'];renderMenuInputs();lnbCount=4;lnbNames=['전체공지','일반공지','보도자료','행사안내'];renderLnbInputs();document.querySelectorAll('.sub').forEach(function(el){el.classList.remove('open');});document.querySelectorAll('.arr').forEach(function(el){el.classList.remove('open');});
   // 헤더, 상단 이미지 영역, 푸터 기본값 복원
   ['hd','sv','ft'].forEach(function(id){var chk=document.getElementById('c-'+id);if(chk)chk.checked=true;var sub=document.getElementById('s-'+id);var arr=document.getElementById('a-'+id);if(sub)sub.classList.add('open');if(arr)arr.classList.add('open');});
   document.getElementById('pf').innerHTML='<div class="empty"><div class="empty-icon">&#128196;</div><div>항목을 선택하고 [미리보기 생성]을 눌러주세요</div></div>';}
@@ -411,6 +445,7 @@ function obc(){var sel=document.querySelector('input[name="bt"]:checked');var v=
     if(arr)arr.classList.add('open');
   });
   renderMenuInputs();
+  renderLnbInputs();
 })();
 document.addEventListener('change',function(e){var inp=e.target;if(inp.type!=='checkbox'&&inp.type!=='radio')return;var sub=inp.closest('.sub');if(!sub)return;var key=sub.id.replace(/^s-/,'');var chk=document.getElementById('c-'+key);if(chk&&chk.type==='checkbox')chk.checked=true;});
 function h(id){var e=document.getElementById(id);return e&&e.checked;}
@@ -717,10 +752,10 @@ function gen(){
 
 
   var hasLnb=h('c-lnb');var lnbPos=rv('lnb');
-  var lnbHtml='<div style="width:150px;flex-shrink:0;"><div style="background:#fff;border:1px solid #e0e0e0;border-radius:6px;overflow:hidden;"><div style="background:#1a1a2e;color:#fff;padding:9px 12px;font-size:12px;font-weight:600;">'+lnbTitle+'</div>'+['전체공지','일반공지','보도자료','행사안내'].map(function(m,i){return '<div style="padding:8px 12px;font-size:12px;'+(i===0?'background:#f0f4ff;color:#1a1a2e;font-weight:600;':'color:#555;')+'border-bottom:1px solid #f0f0f0;cursor:pointer;">'+m+'</div>';}).join('')+'</div></div>';
+  var curLnbNames=lnbNames.slice(0,lnbCount);var lnbHtml='<div style="width:150px;flex-shrink:0;"><div style="background:#fff;border:1px solid #e0e0e0;border-radius:6px;overflow:hidden;"><div data-edit style="background:#1a1a2e;color:#fff;padding:9px 12px;font-size:12px;font-weight:600;">'+lnbTitle+'</div>'+curLnbNames.map(function(m,i){return '<div data-edit style="padding:8px 12px;font-size:12px;'+(i===0?'background:#f0f4ff;color:#1a1a2e;font-weight:600;':'color:#555;')+'border-bottom:1px solid #f0f0f0;cursor:pointer;">'+m+'</div>';}).join('')+'</div></div>';
   var contHtml='<div style="flex:1;min-width:0;">'+cs.join('')+'</div>';var main='';
   if(hasLnb&&lnbPos!=='tab'){main='<div style="display:flex;gap:14px;padding:14px 24px;">'+(lnbPos==='left'?lnbHtml+contHtml:contHtml+lnbHtml)+'</div>';}
-  else if(hasLnb&&lnbPos==='tab'){var tabHtml='<div style="display:flex;border-bottom:2px solid #e0e0e0;margin-bottom:10px;">'+['전체공지','일반공지','보도자료','행사안내'].map(function(m,i){return '<div style="padding:7px 14px;font-size:12px;cursor:pointer;'+(i===0?'border-bottom:2px solid #1a1a2e;color:#1a1a2e;font-weight:600;margin-bottom:-2px;':'color:#888;')+'">'+m+'</div>';}).join('')+'</div>';main='<div style="padding:24px 40px;">'+tabHtml+cs.join('')+'</div>';}
+  else if(hasLnb&&lnbPos==='tab'){var tabHtml='<div style="display:flex;border-bottom:2px solid #e0e0e0;margin-bottom:10px;">'+curLnbNames.map(function(m,i){return '<div data-edit style="padding:7px 14px;font-size:12px;cursor:pointer;'+(i===0?'border-bottom:2px solid #1a1a2e;color:#1a1a2e;font-weight:600;margin-bottom:-2px;':'color:#888;')+'">'+m+'</div>';}).join('')+'</div>';main='<div style="padding:24px 40px;">'+tabHtml+cs.join('')+'</div>';}
   else{main='<div style="padding:24px 40px;">'+cs.join('')+'</div>';}
   sec.push(main);
   if(h('c-ft')){var f='<footer style="background:#222;color:#aaa;padding:18px 24px;font-size:11px;line-height:1.8;">';if(h('c-ft-menu'))f+='<div style="display:flex;gap:12px;margin-bottom:7px;">'+['이용약관','개인정보처리방침','사이트맵','고객센터'].map(function(m){return '<a href="#" style="color:#ccc;text-decoration:none;font-size:11px;">'+m+'</a>';}).join('')+'</div>';if(h('c-ft-sns'))f+='<div style="display:flex;gap:8px;margin-bottom:7px;">'+['f','t','i','y'].map(function(s){return '<span style="width:24px;height:24px;background:#444;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#ccc;font-size:10px;cursor:pointer;">'+s+'</span>';}).join('')+'</div>';if(h('c-ft-info'))f+='<div data-edit>상호명 주식회사 OOO | 대표자: 홍길동 | 사업자등록번호: 000-00-00000<br>주소: 서울특별시 강남구 테헤란로 000 | 대표전화: 02-0000-0000 | Copyright 2025. All rights reserved.</div>';f+='</footer>';sec.push(f);}
