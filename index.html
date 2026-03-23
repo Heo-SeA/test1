@@ -12,7 +12,11 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f4
 .top h1{font-size:18px;font-weight:700;color:#1a1a2e;}
 .top p{font-size:12px;color:#888;margin-top:3px;}
 .wrap{display:flex;gap:14px;padding:0 24px 24px;flex:1;min-height:0;}
-.left{width:280px;min-width:280px;flex-shrink:0;display:flex;flex-direction:column;min-height:0;}
+.left{width:280px;min-width:280px;flex-shrink:0;display:flex;flex-direction:column;min-height:0;transition:width 0.25s,min-width 0.25s;}
+.left.collapsed{width:0;min-width:0;overflow:hidden;}
+.left.collapsed .left-scroll,.left.collapsed .left-btns{opacity:0;pointer-events:none;}
+.panel-toggle{width:32px;height:32px;background:#fff;border:1px solid #e8e8e6;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#555;font-size:15px;flex-shrink:0;}
+.panel-toggle:hover{background:#f5f5f5;}
 .left-scroll{flex:1;min-height:0;overflow-y:auto;background:#fff;border:1px solid #e8e8e6;border-radius:10px;padding:1rem 1.1rem;}
 .left-scroll::-webkit-scrollbar{width:4px;}
 .left-scroll::-webkit-scrollbar-thumb{background:#ddd;border-radius:2px;}
@@ -49,9 +53,12 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f4
 </head>
 <body>
 
-<div class="top">
-  <h1>페이지 빌더</h1>
-  <p>구성 요소를 선택하고 [미리보기 생성]을 눌러 확인하세요.</p>
+<div class="top" style="display:flex;align-items:center;gap:12px;">
+  <button class="panel-toggle" id="panel-toggle-btn" onclick="togglePanel()" title="메뉴 접기/펼치기">☰</button>
+  <div>
+    <h1>페이지 빌더</h1>
+    <p>구성 요소를 선택하고 [미리보기 생성]을 눌러 확인하세요.</p>
+  </div>
 </div>
 
 <div class="wrap">
@@ -366,7 +373,15 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f4
   <div class="right">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-shrink:0;">
       <div class="preview-label" style="margin-bottom:0;">미리보기</div>
-      <button id="btn-download" onclick="downloadImg()" style="display:none;background:#fff;border:1px solid #ddd;border-radius:7px;padding:6px 13px;font-size:12px;color:#555;cursor:pointer;gap:5px;align-items:center;">&#128247; 이미지 저장</button>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <select id="max-width-select" style="border:1px solid #ddd;border-radius:7px;padding:6px 10px;font-size:12px;color:#555;background:#fff;cursor:pointer;outline:none;" onchange="applyMaxWidth(this.value)">
+          <option value="">너비 제한 없음</option>
+          <option value="1200px">1200px</option>
+          <option value="1400px">1400px</option>
+          <option value="1600px">1600px</option>
+        </select>
+        <button id="btn-download" onclick="downloadImg()" style="display:none;background:#fff;border:1px solid #ddd;border-radius:7px;padding:6px 13px;font-size:12px;color:#555;cursor:pointer;gap:5px;align-items:center;">&#128247; 이미지 저장</button>
+      </div>
     </div>
     <div class="pf" id="pf">
       <div class="empty">
@@ -563,6 +578,32 @@ function obc(){var sel=document.querySelector('input[name="bt"]:checked');var v=
 document.addEventListener('change',function(e){var inp=e.target;if(inp.type!=='checkbox'&&inp.type!=='radio')return;var sub=inp.closest('.sub');if(!sub)return;var key=sub.id.replace(/^s-/,'');var chk=document.getElementById('c-'+key);if(chk&&chk.type==='checkbox')chk.checked=true;});
 function h(id){var e=document.getElementById(id);return e&&e.checked;}
 function rv(n){var e=document.querySelector('input[name="'+n+'"]:checked');return e?e.value:'';}
+function togglePanel(){
+  var left=document.querySelector('.left');
+  var btn=document.getElementById('panel-toggle-btn');
+  var isCollapsed=left.classList.toggle('collapsed');
+  btn.textContent=isCollapsed?'☰':'☰';
+  btn.title=isCollapsed?'메뉴 펼치기':'메뉴 접기';
+  btn.style.background=isCollapsed?'#1a1a2e':'#fff';
+  btn.style.color=isCollapsed?'#fff':'#555';
+  btn.style.borderColor=isCollapsed?'#1a1a2e':'#e8e8e6';
+}
+
+function applyMaxWidth(val){
+  var pif=document.getElementById('pif');
+  if(!pif||!pif.contentDocument)return;
+  var body=pif.contentDocument.body;
+  if(!body)return;
+  if(val){
+    body.style.maxWidth=val;
+    body.style.margin='0 auto';
+    body.style.boxSizing='border-box';
+  } else {
+    body.style.maxWidth='';
+    body.style.margin='';
+  }
+}
+
 function downloadImg(){
   var pif=document.getElementById('pif');
   if(!pif)return;
@@ -1215,6 +1256,10 @@ function gen(){
   if(dlBtn)dlBtn.style.display='flex';
   var pif=document.getElementById('pif');
   pif.srcdoc=html;
+  pif.onload=function(){
+    var sel=document.getElementById('max-width-select');
+    if(sel&&sel.value)applyMaxWidth(sel.value);
+  };
   // 캘린더가 포함된 경우 iframe 로드 후 JS 주입
 }
 </script>
