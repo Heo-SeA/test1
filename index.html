@@ -4,52 +4,84 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>페이지 빌더</title>
-<link href="favicon.ico" rel="icon"/>
 <style>
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 html,body{height:100%;margin:0;padding:0;}
 *,*::before,*::after{box-sizing:border-box;}
-body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f4f4f2;color:#222;font-size:14px;min-width:700px;display:flex;flex-direction:column;}
-.top{padding:16px 24px 10px;flex-shrink:0;}
-.top h1{font-size:18px;font-weight:700;color:#1a1a2e;}
-.top p{font-size:12px;color:#888;margin-top:3px;}
-.wrap{display:flex;gap:14px;padding:0 24px 24px;flex:1;min-height:0;}
-.left{width:280px;min-width:280px;flex-shrink:0;display:flex;flex-direction:column;min-height:0;transition:width 0.25s,min-width 0.25s;}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#ebebea;color:#222;font-size:14px;min-width:700px;display:flex;flex-direction:column;}
+.top{padding:13px 18px 8px;flex-shrink:0;}
+.top h1{font-size:15px;font-weight:700;color:#1a1a2e;}
+.top p{font-size:11px;color:#999;margin-top:2px;}
+.wrap{display:flex;gap:10px;padding:0 18px 18px;flex:1;min-height:0;}
+.left{width:268px;min-width:268px;flex-shrink:0;display:flex;flex-direction:column;min-height:0;transition:width 0.25s,min-width 0.25s;}
 .left.collapsed{width:0;min-width:0;overflow:hidden;}
 .left.collapsed .left-scroll,.left.collapsed .left-btns{opacity:0;pointer-events:none;}
-.panel-toggle{width:32px;height:32px;background:#fff;border:1px solid #e8e8e6;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#555;font-size:15px;flex-shrink:0;}
-.panel-toggle:hover{background:#f5f5f5;}
-.left-scroll{flex:1;min-height:0;overflow-y:auto;background:#fff;border:1px solid #e8e8e6;border-radius:10px;padding:1rem 1.1rem;}
-.left-scroll::-webkit-scrollbar{width:4px;}
+.panel-toggle{width:28px;height:28px;background:#fff;border:1px solid #ddddd9;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#666;font-size:13px;flex-shrink:0;}
+.panel-toggle:hover{background:#f5f5f3;}
+.left-scroll{flex:1;min-height:0;overflow-y:auto;background:#fff;border:1px solid #ddddd9;border-radius:10px;padding:.85rem .95rem;}
+.left-scroll::-webkit-scrollbar{width:3px;}
 .left-scroll::-webkit-scrollbar-thumb{background:#ddd;border-radius:2px;}
-.left-btns{flex-shrink:0;display:flex;gap:7px;margin-top:10px;}
-.btn-reset{background:#fff;border:1px solid #ddd;border-radius:8px;padding:10px 14px;font-size:18px;color:#555;cursor:pointer;flex-shrink:0;line-height:1;}
-.btn-reset:hover{background:#f5f5f5;}
-.btn-done{flex:1;background:#1a1a2e;color:#fff;border:none;border-radius:8px;padding:11px;font-size:13px;font-weight:600;cursor:pointer;}
-.btn-done:hover{background:#2a2a4e;}
-.right{flex:1;min-width:0;display:flex;flex-direction:column;background:#fff;border:1px solid #e8e8e6;border-radius:10px;padding:1rem 1.1rem;}
-.preview-label{font-size:13px;font-weight:600;color:#666;margin-bottom:10px;flex-shrink:0;}
-.pf{flex:1;min-height:0;border:1px solid #e8e8e6;border-radius:8px;overflow:hidden;background:#fafafa;}
+.left-btns{flex-shrink:0;display:flex;gap:6px;margin-top:8px;}
+.btn-reset{background:var(--krds-gray-0);border:1px solid var(--krds-gray-20);border-radius:8px;padding:9px 12px;font-size:16px;color:var(--krds-gray-60);cursor:pointer;flex-shrink:0;line-height:1;}
+.btn-reset:hover{background:var(--krds-gray-5);}
+.btn-done{flex:1;background:var(--krds-primary);color:#fff;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:.01em;}
+.btn-done:hover{background:#0b50d0;}
+/* 오른쪽 미리보기 패널 */
+.right{flex:1;min-width:0;display:flex;flex-direction:column;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.07);}
+.preview-topbar{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;background:#e2e2df;flex-shrink:0;}
+.preview-label{font-size:11px;font-weight:600;color:#666;letter-spacing:.03em;text-transform:uppercase;}
+.preview-controls{display:flex;align-items:center;gap:6px;}
+.preview-select{border:1px solid #ccccc8;border-radius:6px;padding:4px 8px;font-size:11px;color:#555;background:#fff;cursor:pointer;outline:none;}
+.preview-btn{background:#fff;border:1px solid #ccccc8;border-radius:6px;padding:4px 10px;font-size:11px;color:#555;cursor:pointer;white-space:nowrap;display:none;}
+.preview-btn:hover{background:#f5f5f3;}
+/* 브라우저 크롬 바 */
+.browser-chrome{background:#d8d8d5;padding:7px 12px;display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.browser-dots{display:flex;gap:5px;align-items:center;}
+.browser-dot{width:10px;height:10px;border-radius:50%;}
+.browser-dot.red{background:#ff5f57;}
+.browser-dot.yellow{background:#febc2e;}
+.browser-dot.green{background:#28c840;}
+.browser-url{flex:1;background:rgba(255,255,255,0.7);border:none;border-radius:5px;padding:3px 10px;font-size:11px;color:#888;margin:0 8px;text-align:center;}
+.pf-wrap{flex:1;min-height:0;overflow-y:auto;background:#fff;}
+.pf-wrap::-webkit-scrollbar{width:4px;}
+.pf-wrap::-webkit-scrollbar-thumb{background:#e0e0e0;border-radius:2px;}
+.pf{height:100%;}
 .pf iframe{width:100%;height:100%;border:none;display:block;}
-.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:#bbb;font-size:13px;gap:8px;}
-.empty-icon{font-size:32px;}
-.sec-label{font-size:11px;font-weight:600;color:#888;letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;}
-.sub-group-label{font-size:11px;font-weight:600;color:#aaa;padding:4px 2px;margin-bottom:4px;border-bottom:1px solid #f0f0f0;}
-.group{margin-bottom:10px;}
-.item{border:1px solid #e8e8e6;border-radius:8px;overflow:hidden;margin-bottom:5px;}
-.item:hover{border-color:#bbb;}
-.item-hd{display:flex;align-items:center;gap:8px;padding:8px 10px;background:#fafafa;}
-.item-hd input{width:14px;height:14px;cursor:pointer;flex-shrink:0;accent-color:#1a1a2e;}
-.lbl-wrap{flex:1;cursor:pointer;padding:2px 0;}
-.lbl{font-size:13px;font-weight:500;color:#222;display:block;}
-.desc{font-size:11px;color:#999;}
-.arr{width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:16px;color:#bbb;cursor:pointer;user-select:none;flex-shrink:0;transition:transform .18s;}
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:300px;color:#c0c0c0;font-size:12px;gap:8px;background:#fff;}
+.empty-icon{font-size:26px;opacity:.45;}
+:root{--krds-primary:#256ef4;--krds-gray-0:#ffffff;--krds-gray-5:#f4f5f6;--krds-gray-10:#e6e8ea;--krds-gray-20:#cdd1d5;--krds-gray-30:#b1b8be;--krds-gray-40:#8a949e;--krds-gray-50:#6d7882;--krds-gray-60:#58616a;--krds-gray-70:#464c53;--krds-gray-80:#33363d;--krds-gray-90:#1e2124;--krds-gray-95:#131416;--krds-radius-sm:0.4rem;--krds-radius-md:0.8rem;}
+.sec-label{font-size:10px;font-weight:700;color:var(--krds-gray-40);letter-spacing:.08em;text-transform:uppercase;margin:14px 0 5px;padding-left:1px;}
+.sec-label:first-child{margin-top:4px;}
+.sub-group-label{font-size:10px;font-weight:600;color:var(--krds-gray-30);padding:5px 2px 4px;margin-bottom:3px;border-bottom:1px solid var(--krds-gray-10);letter-spacing:.02em;}
+.group{margin-bottom:5px;}
+.item{border:1px solid var(--krds-gray-10);border-radius:var(--krds-radius-md);overflow:hidden;margin-bottom:3px;transition:border-color .15s;}
+.item:hover{border-color:var(--krds-gray-20);}
+.item-hd{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--krds-gray-5);}
+.item-hd input[type=checkbox]{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:1.5px solid var(--krds-gray-40);border-radius:var(--krds-radius-sm);cursor:pointer;flex-shrink:0;position:relative;transition:all .2s cubic-bezier(.4,0,.23,1);background:var(--krds-gray-0);}
+.item-hd input[type=checkbox]:checked{background:var(--krds-primary);border-color:var(--krds-primary);}
+.item-hd input[type=checkbox]:checked::after{content:'';position:absolute;left:4.5px;top:2px;width:6px;height:9px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg);}
+.item-hd input[type=radio]{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:1.5px solid var(--krds-gray-40);border-radius:50%;cursor:pointer;flex-shrink:0;position:relative;transition:all .2s cubic-bezier(.4,0,.23,1);background:var(--krds-gray-0);}
+.item-hd input[type=radio]:checked{border-color:var(--krds-primary);}
+.item-hd input[type=radio]:checked::after{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:8px;height:8px;border-radius:50%;background:var(--krds-primary);}
+.lbl-wrap{flex:1;padding:1px 0;}
+.lbl{font-size:13px;font-weight:500;color:var(--krds-gray-90);display:block;line-height:1.3;}
+.desc{font-size:11px;color:var(--krds-gray-40);margin-top:1px;}
+.arr{width:20px;height:20px;display:flex;align-items:center;justify-content:center;color:var(--krds-gray-30);cursor:pointer;user-select:none;flex-shrink:0;transition:transform .2s,color .15s;}
+.arr:hover{color:var(--krds-gray-60);}
 .arr.open{transform:rotate(180deg);}
-.sub{padding:8px 10px;display:none;flex-direction:column;gap:5px;border-top:1px solid #f0f0f0;background:#fff;}
+.sub{padding:8px 10px;display:none;flex-direction:column;gap:3px;border-top:1px solid var(--krds-gray-10);background:var(--krds-gray-0);}
 .sub.open{display:flex;}
-.st{font-size:11px;font-weight:600;color:#aaa;margin-top:4px;}
+.st{font-size:10px;font-weight:700;color:var(--krds-gray-30);letter-spacing:.06em;text-transform:uppercase;margin-top:7px;}
 .st:first-child{margin-top:0;}
-.opt{display:flex;align-items:center;gap:6px;font-size:12px;color:#555;}
-.opt input{width:13px;height:13px;accent-color:#1a1a2e;}
+.opt{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--krds-gray-70);padding:2px 0;}
+.opt input[type=checkbox]{appearance:none;-webkit-appearance:none;width:16px;height:16px;border:1.5px solid var(--krds-gray-30);border-radius:var(--krds-radius-sm);cursor:pointer;flex-shrink:0;position:relative;transition:all .2s cubic-bezier(.4,0,.23,1);background:var(--krds-gray-0);}
+.opt input[type=checkbox]:checked{background:var(--krds-primary);border-color:var(--krds-primary);}
+.opt input[type=checkbox]:checked::after{content:'';position:absolute;left:3.5px;top:1.5px;width:5px;height:8px;border:1.5px solid #fff;border-top:none;border-left:none;transform:rotate(45deg);}
+.opt input[type=radio]{appearance:none;-webkit-appearance:none;width:16px;height:16px;border:1.5px solid var(--krds-gray-30);border-radius:50%;cursor:pointer;flex-shrink:0;position:relative;transition:all .2s cubic-bezier(.4,0,.23,1);background:var(--krds-gray-0);}
+.opt input[type=radio]:checked{border-color:var(--krds-primary);}
+.opt input[type=radio]:checked::after{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:7px;height:7px;border-radius:50%;background:var(--krds-primary);}
+.pf{min-height:600px;}
+.pf iframe{width:100%;min-height:600px;height:100%;border:none;display:block;}
 </style>
 </head>
 <body>
@@ -75,7 +107,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f4
           <div class="item-hd">
             <input type="checkbox" id="c-hd">
             <div class="lbl-wrap" onclick="tc('hd')"><span class="lbl">헤더 네비게이션</span><span class="desc">메뉴 구성 및 포함 요소</span></div>
-            <span class="arr" id="a-hd" onclick="ts('hd')">&#8964;</span>
+            <span class="arr" id="a-hd" onclick="ts('hd')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="12" height="12" fill="currentColor"><path d="M297.4 438.6C309.9 451.1 330.2 451.1 342.7 438.6L502.7 278.6C515.2 266.1 515.2 245.8 502.7 233.3C490.2 220.8 469.9 220.8 457.4 233.3L320 370.7L182.6 233.4C170.1 220.9 149.8 220.9 137.3 233.4C124.8 245.9 124.8 266.2 137.3 278.7L297.3 438.7z"/></svg></span>
           </div>
           <div class="sub" id="s-hd">
             <div class="st">메뉴 개수</div>
@@ -103,7 +135,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f4
           <div class="item-hd">
             <input type="checkbox" id="c-hd-nav" onchange="if(this.checked){var hd=document.getElementById('c-hd');if(hd)hd.checked=true;}">
             <div class="lbl-wrap" onclick="tc('hd-nav')"><span class="lbl">드롭다운 방식</span><span class="desc">2depth 메뉴 스타일 선택</span></div>
-            <span class="arr" id="a-hd-nav" onclick="ts('hd-nav')">&#8964;</span>
+            <span class="arr" id="a-hd-nav" onclick="ts('hd-nav')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="12" height="12" fill="currentColor"><path d="M297.4 438.6C309.9 451.1 330.2 451.1 342.7 438.6L502.7 278.6C515.2 266.1 515.2 245.8 502.7 233.3C490.2 220.8 469.9 220.8 457.4 233.3L320 370.7L182.6 233.4C170.1 220.9 149.8 220.9 137.3 233.4C124.8 245.9 124.8 266.2 137.3 278.7L297.3 438.7z"/></svg></span>
           </div>
           <div class="sub" id="s-hd-nav">
             <div class="st">네비게이션 버전</div>
@@ -122,7 +154,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f4
           <div class="item-hd">
             <input type="checkbox" id="c-sv">
             <div class="lbl-wrap" onclick="tc('sv')"><span class="lbl">상단 이미지 영역</span></div>
-            <span class="arr" id="a-sv" onclick="ts('sv')">&#8964;</span>
+            <span class="arr" id="a-sv" onclick="ts('sv')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="12" height="12" fill="currentColor"><path d="M297.4 438.6C309.9 451.1 330.2 451.1 342.7 438.6L502.7 278.6C515.2 266.1 515.2 245.8 502.7 233.3C490.2 220.8 469.9 220.8 457.4 233.3L320 370.7L182.6 233.4C170.1 220.9 149.8 220.9 137.3 233.4C124.8 245.9 124.8 266.2 137.3 278.7L297.3 438.7z"/></svg></span>
           </div>
           <div class="sub" id="s-sv">
             <label class="opt"><input type="radio" name="sv" value="img" checked> 이미지 有</label>
@@ -134,7 +166,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f4
           <div class="item-hd">
             <input type="checkbox" id="c-lnb">
             <div class="lbl-wrap" onclick="tc('lnb')"><span class="lbl">LNB 네비게이션</span></div>
-            <span class="arr" id="a-lnb" onclick="ts('lnb')">&#8964;</span>
+            <span class="arr" id="a-lnb" onclick="ts('lnb')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="12" height="12" fill="currentColor"><path d="M297.4 438.6C309.9 451.1 330.2 451.1 342.7 438.6L502.7 278.6C515.2 266.1 515.2 245.8 502.7 233.3C490.2 220.8 469.9 220.8 457.4 233.3L320 370.7L182.6 233.4C170.1 220.9 149.8 220.9 137.3 233.4C124.8 245.9 124.8 266.2 137.3 278.7L297.3 438.7z"/></svg></span>
           </div>
           <div class="sub" id="s-lnb">
             <label class="opt"><input type="radio" name="lnb" value="left" checked> 좌측 LNB</label>
@@ -159,7 +191,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f4
           <div class="item-hd">
             <input type="checkbox" id="c-s">
             <div class="lbl-wrap" onclick="tc('s')"><span class="lbl">검색 영역</span></div>
-            <span class="arr" id="a-s" onclick="ts('s')">&#8964;</span>
+            <span class="arr" id="a-s" onclick="ts('s')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="12" height="12" fill="currentColor"><path d="M297.4 438.6C309.9 451.1 330.2 451.1 342.7 438.6L502.7 278.6C515.2 266.1 515.2 245.8 502.7 233.3C490.2 220.8 469.9 220.8 457.4 233.3L320 370.7L182.6 233.4C170.1 220.9 149.8 220.9 137.3 233.4C124.8 245.9 124.8 266.2 137.3 278.7L297.3 438.7z"/></svg></span>
           </div>
           <div class="sub" id="s-s">
             <label class="opt"><input type="checkbox" id="c-s-box" checked> 검색어 입력박스</label>
@@ -184,7 +216,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f4
           <div class="item-hd">
             <input type="radio" name="bt" value="notice" id="br-notice" onchange="obc()">
             <div class="lbl-wrap" onclick="sb('notice')"><span class="lbl">공지형</span><span class="desc">번호·제목·날짜 텍스트 리스트</span></div>
-            <span class="arr" id="a-b-notice" onclick="ts('b-notice')">&#8964;</span>
+            <span class="arr" id="a-b-notice" onclick="ts('b-notice')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="12" height="12" fill="currentColor"><path d="M297.4 438.6C309.9 451.1 330.2 451.1 342.7 438.6L502.7 278.6C515.2 266.1 515.2 245.8 502.7 233.3C490.2 220.8 469.9 220.8 457.4 233.3L320 370.7L182.6 233.4C170.1 220.9 149.8 220.9 137.3 233.4C124.8 245.9 124.8 266.2 137.3 278.7L297.3 438.7z"/></svg></span>
           </div>
           <div class="sub" id="s-b-notice">
             <div class="st" style="color:#aaa;font-size:10px;">※ 미리보기에서 직접 클릭해서 수정하세요</div>
@@ -207,7 +239,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f4
           <div class="item-hd">
             <input type="radio" name="bt" value="photo" id="br-photo" onchange="obc()">
             <div class="lbl-wrap" onclick="sb('photo')"><span class="lbl">포토형</span><span class="desc">썸네일 중심 갤러리</span></div>
-            <span class="arr" id="a-b-photo" onclick="ts('b-photo')">&#8964;</span>
+            <span class="arr" id="a-b-photo" onclick="ts('b-photo')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="12" height="12" fill="currentColor"><path d="M297.4 438.6C309.9 451.1 330.2 451.1 342.7 438.6L502.7 278.6C515.2 266.1 515.2 245.8 502.7 233.3C490.2 220.8 469.9 220.8 457.4 233.3L320 370.7L182.6 233.4C170.1 220.9 149.8 220.9 137.3 233.4C124.8 245.9 124.8 266.2 137.3 278.7L297.3 438.7z"/></svg></span>
           </div>
           <div class="sub" id="s-b-photo">
             <div class="st" style="color:#aaa;font-size:10px;">※ 미리보기에서 직접 클릭해서 수정하세요</div>
@@ -232,7 +264,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f4
           <div class="item-hd">
             <input type="radio" name="bt" value="blog" id="br-blog" onchange="obc()">
             <div class="lbl-wrap" onclick="sb('blog')"><span class="lbl">블로그형</span><span class="desc">썸네일 + 제목 + 본문 요약</span></div>
-            <span class="arr" id="a-b-blog" onclick="ts('b-blog')">&#8964;</span>
+            <span class="arr" id="a-b-blog" onclick="ts('b-blog')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="12" height="12" fill="currentColor"><path d="M297.4 438.6C309.9 451.1 330.2 451.1 342.7 438.6L502.7 278.6C515.2 266.1 515.2 245.8 502.7 233.3C490.2 220.8 469.9 220.8 457.4 233.3L320 370.7L182.6 233.4C170.1 220.9 149.8 220.9 137.3 233.4C124.8 245.9 124.8 266.2 137.3 278.7L297.3 438.7z"/></svg></span>
           </div>
           <div class="sub" id="s-b-blog">
             <div class="st" style="color:#aaa;font-size:10px;">※ 미리보기에서 직접 클릭해서 수정하세요</div>
@@ -252,7 +284,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f4
           <div class="item-hd">
             <input type="radio" name="bt" value="qna" id="br-qna" onchange="obc()">
             <div class="lbl-wrap" onclick="sb('qna')"><span class="lbl">QnA형</span><span class="desc">질문-답변 계층 구조</span></div>
-            <span class="arr" id="a-b-qna" onclick="ts('b-qna')">&#8964;</span>
+            <span class="arr" id="a-b-qna" onclick="ts('b-qna')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="12" height="12" fill="currentColor"><path d="M297.4 438.6C309.9 451.1 330.2 451.1 342.7 438.6L502.7 278.6C515.2 266.1 515.2 245.8 502.7 233.3C490.2 220.8 469.9 220.8 457.4 233.3L320 370.7L182.6 233.4C170.1 220.9 149.8 220.9 137.3 233.4C124.8 245.9 124.8 266.2 137.3 278.7L297.3 438.7z"/></svg></span>
           </div>
           <div class="sub" id="s-b-qna">
             <div class="st" style="color:#aaa;font-size:10px;">※ 미리보기에서 직접 클릭해서 수정하세요</div>
@@ -266,7 +298,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f4
           <div class="item-hd">
             <input type="radio" name="bt" value="faq" id="br-faq" onchange="obc()">
             <div class="lbl-wrap" onclick="sb('faq')"><span class="lbl">FAQ형</span><span class="desc">아코디언 질문 목록</span></div>
-            <span class="arr" id="a-b-faq" onclick="ts('b-faq')">&#8964;</span>
+            <span class="arr" id="a-b-faq" onclick="ts('b-faq')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="12" height="12" fill="currentColor"><path d="M297.4 438.6C309.9 451.1 330.2 451.1 342.7 438.6L502.7 278.6C515.2 266.1 515.2 245.8 502.7 233.3C490.2 220.8 469.9 220.8 457.4 233.3L320 370.7L182.6 233.4C170.1 220.9 149.8 220.9 137.3 233.4C124.8 245.9 124.8 266.2 137.3 278.7L297.3 438.7z"/></svg></span>
           </div>
           <div class="sub" id="s-b-faq">
             <div class="st" style="color:#aaa;font-size:10px;">※ 미리보기에서 직접 클릭해서 수정하세요</div>
@@ -283,7 +315,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f4
           <div class="item-hd">
             <input type="radio" name="bt" value="brochure" id="br-brochure" onchange="obc()">
             <div class="lbl-wrap" onclick="sb('brochure')"><span class="lbl">브로슈어 (자료실)</span><span class="desc">다운로드 중심 자료 목록</span></div>
-            <span class="arr" id="a-b-brochure" onclick="ts('b-brochure')">&#8964;</span>
+            <span class="arr" id="a-b-brochure" onclick="ts('b-brochure')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="12" height="12" fill="currentColor"><path d="M297.4 438.6C309.9 451.1 330.2 451.1 342.7 438.6L502.7 278.6C515.2 266.1 515.2 245.8 502.7 233.3C490.2 220.8 469.9 220.8 457.4 233.3L320 370.7L182.6 233.4C170.1 220.9 149.8 220.9 137.3 233.4C124.8 245.9 124.8 266.2 137.3 278.7L297.3 438.7z"/></svg></span>
           </div>
           <div class="sub" id="s-b-brochure">
             <div class="st" style="color:#aaa;font-size:10px;">※ 미리보기에서 직접 클릭해서 수정하세요</div>
@@ -301,7 +333,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f4
           <div class="item-hd">
             <input type="radio" name="bt" value="pgcard" id="br-pgcard" onchange="obc()">
             <div class="lbl-wrap" onclick="sb('pgcard')"><span class="lbl">프로그램 카드형</span><span class="desc">이미지 + 기간/모집현황 뱃지</span></div>
-            <span class="arr" id="a-b-pgcard" onclick="ts('b-pgcard')">&#8964;</span>
+            <span class="arr" id="a-b-pgcard" onclick="ts('b-pgcard')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="12" height="12" fill="currentColor"><path d="M297.4 438.6C309.9 451.1 330.2 451.1 342.7 438.6L502.7 278.6C515.2 266.1 515.2 245.8 502.7 233.3C490.2 220.8 469.9 220.8 457.4 233.3L320 370.7L182.6 233.4C170.1 220.9 149.8 220.9 137.3 233.4C124.8 245.9 124.8 266.2 137.3 278.7L297.3 438.7z"/></svg></span>
           </div>
           <div class="sub" id="s-b-pgcard">
             <div class="st" style="color:#aaa;font-size:10px;">※ 미리보기에서 직접 클릭해서 수정하세요</div>
@@ -318,7 +350,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f4
           <div class="item-hd">
             <input type="radio" name="bt" value="pglist" id="br-pglist" onchange="obc()">
             <div class="lbl-wrap" onclick="sb('pglist')"><span class="lbl">프로그램 리스트형</span><span class="desc">번호·제목·날짜·링크 테이블</span></div>
-            <span class="arr" id="a-b-pglist" onclick="ts('b-pglist')">&#8964;</span>
+            <span class="arr" id="a-b-pglist" onclick="ts('b-pglist')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="12" height="12" fill="currentColor"><path d="M297.4 438.6C309.9 451.1 330.2 451.1 342.7 438.6L502.7 278.6C515.2 266.1 515.2 245.8 502.7 233.3C490.2 220.8 469.9 220.8 457.4 233.3L320 370.7L182.6 233.4C170.1 220.9 149.8 220.9 137.3 233.4C124.8 245.9 124.8 266.2 137.3 278.7L297.3 438.7z"/></svg></span>
           </div>
           <div class="sub" id="s-b-pglist">
             <div class="st" style="color:#aaa;font-size:10px;">※ 미리보기에서 직접 클릭해서 수정하세요</div>
@@ -339,7 +371,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f4
           <div class="item-hd">
             <input type="radio" name="bt" value="calendar" id="br-calendar" onchange="obc()">
             <div class="lbl-wrap" onclick="sb('calendar')"><span class="lbl">캘린더형</span><span class="desc">월별 그리드 + 이벤트 바</span></div>
-            <span class="arr" id="a-b-calendar" onclick="ts('b-calendar')">&#8964;</span>
+            <span class="arr" id="a-b-calendar" onclick="ts('b-calendar')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="12" height="12" fill="currentColor"><path d="M297.4 438.6C309.9 451.1 330.2 451.1 342.7 438.6L502.7 278.6C515.2 266.1 515.2 245.8 502.7 233.3C490.2 220.8 469.9 220.8 457.4 233.3L320 370.7L182.6 233.4C170.1 220.9 149.8 220.9 137.3 233.4C124.8 245.9 124.8 266.2 137.3 278.7L297.3 438.7z"/></svg></span>
           </div>
           <div class="sub" id="s-b-calendar">
             <div class="st" style="color:#aaa;font-size:10px;">※ 미리보기에서 직접 클릭해서 수정하세요</div>
@@ -357,7 +389,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f4
           <div class="item-hd">
             <input type="checkbox" id="c-ft">
             <div class="lbl-wrap" onclick="tc('ft')"><span class="lbl">푸터</span></div>
-            <span class="arr" id="a-ft" onclick="ts('ft')">&#8964;</span>
+            <span class="arr" id="a-ft" onclick="ts('ft')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="12" height="12" fill="currentColor"><path d="M297.4 438.6C309.9 451.1 330.2 451.1 342.7 438.6L502.7 278.6C515.2 266.1 515.2 245.8 502.7 233.3C490.2 220.8 469.9 220.8 457.4 233.3L320 370.7L182.6 233.4C170.1 220.9 149.8 220.9 137.3 233.4C124.8 245.9 124.8 266.2 137.3 278.7L297.3 438.7z"/></svg></span>
           </div>
           <div class="sub" id="s-ft">
             <label class="opt"><input type="checkbox" id="c-ft-info" checked> 사업자 정보</label>
@@ -376,22 +408,32 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f4
   </div>
 
   <div class="right">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-shrink:0;">
-      <div class="preview-label" style="margin-bottom:0;">미리보기</div>
-      <div style="display:flex;align-items:center;gap:8px;">
-        <select id="max-width-select" style="border:1px solid #ddd;border-radius:7px;padding:6px 10px;font-size:12px;color:#555;background:#fff;cursor:pointer;outline:none;" onchange="applyMaxWidth(this.value)">
+    <div class="preview-topbar">
+      <div class="preview-label">미리보기</div>
+      <div class="preview-controls">
+        <select id="max-width-select" class="preview-select" onchange="applyMaxWidth(this.value)">
           <option value="">너비 제한 없음</option>
           <option value="1200px">1200px</option>
           <option value="1400px">1400px</option>
           <option value="1600px">1600px</option>
         </select>
-        <button id="btn-download" onclick="downloadImg()" style="display:none;background:#fff;border:1px solid #ddd;border-radius:7px;padding:6px 13px;font-size:12px;color:#555;cursor:pointer;gap:5px;align-items:center;">&#128247; 이미지 저장</button>
+        <button id="btn-download" class="preview-btn" onclick="downloadImg()">📷 이미지 저장</button>
       </div>
     </div>
-    <div class="pf" id="pf">
-      <div class="empty">
-        <div class="empty-icon">&#128196;</div>
-        <div>항목을 선택하고 [미리보기 생성]을 눌러주세요</div>
+    <div class="browser-chrome">
+      <div class="browser-dots">
+        <div class="browser-dot red"></div>
+        <div class="browser-dot yellow"></div>
+        <div class="browser-dot green"></div>
+      </div>
+      <div class="browser-url">preview</div>
+    </div>
+    <div class="pf-wrap">
+      <div class="pf" id="pf">
+        <div class="empty">
+          <div class="empty-icon">&#128196;</div>
+          <div>항목을 선택하고 [미리보기 생성]을 눌러주세요</div>
+        </div>
       </div>
     </div>
   </div>
@@ -644,6 +686,10 @@ function downloadImg(){
 
 function gen(){
   var sec=[];var bt=rv('bt');
+  function thumbWire(ratio,radius){
+    var r=radius||'0';
+    return '<div style="position:relative;width:100%;padding-top:'+ratio+';background:#f0f0f0;border-radius:'+r+';overflow:hidden;"><svg style="position:absolute;top:0;left:0;width:100%;height:100%;" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="0" x2="100%" y2="100%" stroke="#c8c8c8" stroke-width="1"/><line x1="100%" y1="0" x2="0" y2="100%" stroke="#c8c8c8" stroke-width="1"/></svg><div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#b0b0b0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="background:rgba(255,255,255,0.8);border-radius:4px;padding:4px;box-sizing:border-box;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div></div>';
+  }
   // 텍스트 입력값 읽기
   var svTitle='1Depth';
   var svBread='HOME > 1Depth';
@@ -739,7 +785,7 @@ function gen(){
     }
   }
 
-  if(h('c-sv')){var svt=rv('sv');sec.push(svt==='img'?'<div style="background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:40px 24px;text-align:center;"><p data-edit style="font-size:11px;opacity:0.5;margin-bottom:6px;">'+svBread+'</p><h2 data-edit style="font-size:22px;font-weight:700;">'+svTitle+'</h2></div>':'<div style="background:#f8f8f8;border-bottom:1px solid #eee;padding:16px 24px;"><p data-edit style="font-size:11px;color:#aaa;margin-bottom:4px;">'+svBread+'</p><h2 data-edit style="font-size:18px;font-weight:700;color:#222;">'+svTitle+'</h2></div>');}
+  if(h('c-sv')){var svt=rv('sv');sec.push(svt==='img'?'<div style="position:relative;width:100%;height:160px;background:#f0f0f0;overflow:hidden;box-sizing:border-box;"><svg style="position:absolute;top:0;left:0;width:100%;height:100%;" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="0" x2="100%" y2="100%" stroke="#c8c8c8" stroke-width="1.5"/><line x1="100%" y1="0" x2="0" y2="100%" stroke="#c8c8c8" stroke-width="1.5"/><rect x="1" y="1" width="99%" height="99%" fill="none" stroke="#d0d0d0" stroke-width="1"/></svg><div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="background:#fff;border-radius:6px;padding:6px;box-sizing:border-box;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><p data-edit style="font-size:11px;color:#aaa;margin:0;">'+svBread+'</p><h2 data-edit style="font-size:16px;font-weight:700;color:#666;margin:0;">'+svTitle+'</h2></div></div>':'<div style="background:#f8f8f8;border-bottom:1px solid #eee;padding:16px 24px;"><p data-edit style="font-size:11px;color:#aaa;margin-bottom:4px;">'+svBread+'</p><h2 data-edit style="font-size:18px;font-weight:700;color:#222;">'+svTitle+'</h2></div>');}
   var cs=[];
   if(h('c-s')){var s='<div style="background:#fff;margin:14px 0;padding:10px 14px;border-radius:6px;border:1px solid #e0e0e0;display:flex;gap:7px;flex-wrap:wrap;align-items:center;">';if(h('c-s-cat'))s+='<select style="border:1px solid #ddd;border-radius:4px;padding:5px 7px;font-size:12px;background:#fff;"><option>카테고리 선택</option><option>공지</option><option>행사</option><option>교육</option></select>';if(h('c-s-type'))s+='<select style="border:1px solid #ddd;border-radius:4px;padding:5px 7px;font-size:12px;background:#fff;"><option>전체</option><option>제목</option><option>내용</option></select>';if(h('c-s-region'))s+='<select style="border:1px solid #ddd;border-radius:4px;padding:5px 7px;font-size:12px;background:#fff;"><option>전체 지역</option><option>서울</option><option>경기</option><option>부산</option></select>';if(h('c-s-date'))s+='<select style="border:1px solid #ddd;border-radius:4px;padding:5px 7px;font-size:12px;background:#fff;"><option>기간 전체</option><option>1개월</option><option>3개월</option></select>';var chkEls=document.querySelectorAll('.custom-chk');customSelects.forEach(function(name,i){if(chkEls[i]&&chkEls[i].checked)s+='<select style="border:1px solid #ddd;border-radius:4px;padding:5px 7px;font-size:12px;background:#fff;"><option>'+name+' 전체</option><option>항목 1</option><option>항목 2</option></select>';});if(h('c-s-box'))s+='<input type="text" placeholder="검색어를 입력해 주세요." style="flex:1;min-width:140px;border:1px solid #ddd;border-radius:4px;padding:5px 9px;font-size:12px;">';s+='<button style="background:#1a1a2e;color:#fff;border:none;border-radius:4px;padding:5px 14px;font-size:12px;cursor:pointer;">검색</button></div>';cs.push(s);}
   if(bt==='notice'){
@@ -804,10 +850,9 @@ function gen(){
     b+='<div data-edit style="font-size:12px;color:#888;margin-bottom:10px;">전체 251 | 현재페이지 1/26</div>';
     b+='<div style="display:grid;grid-template-columns:repeat('+col+',1fr);gap:12px;">';
     for(var i=1;i<=parseInt(col)*3;i++){
-      b+='<div style="background:#fff;border:1px solid #e0e0e0;border-radius:6px;overflow:hidden;">';
-      b+='<div style="position:relative;width:100%;padding-top:75%;background:#ddd;">';
+      b+='<div style="background:#fff;border:1px solid #e0e0e0;border-radius:6px;overflow:hidden;position:relative;">';
+      b+=thumbWire('75%');
       if(h('c-ph-badge')&&i<=2)b+='<span style="position:absolute;top:8px;left:8px;background:#1a1a2e;color:#fff;font-size:10px;padding:2px 7px;border-radius:3px;z-index:1;">NEW</span>';
-      b+='</div>';
       b+='<div style="padding:9px 11px;">';
       b+='<div data-edit style="font-size:13px;font-weight:600;color:#222;margin-bottom:5px;">사진 제목 '+i+'</div>';
       b+='<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px;">';
@@ -850,7 +895,7 @@ function gen(){
     b+='<div data-edit style="font-size:12px;color:#888;margin-bottom:10px;">전체 251 | 현재페이지 1/26</div>';
     items.forEach(function(it){
       b+='<div style="display:flex;gap:12px;align-items:flex-start;padding:14px 0;border-bottom:1px solid #f0f0f0;">';
-      if(h('c-bl-thumb'))b+='<div style="flex-shrink:0;width:100px;"><div style="width:100px;padding-top:75%;background:#ddd;border-radius:5px;"></div></div>';
+      if(h('c-bl-thumb'))b+='<div style="flex-shrink:0;width:100px;">'+thumbWire('75%','5px')+'</div>';
       b+='<div style="flex:1;">';
       b+='<div data-edit style="font-size:14px;font-weight:600;color:#222;margin-bottom:5px;">'+it.t+'</div>';
       if(h('c-bl-sum'))b+='<div data-edit style="font-size:12px;color:#888;margin-top:3px;line-height:1.6;margin-bottom:6px;">본문 요약 텍스트가 이 위치에 2~3줄로 노출됩니다.</div>';
@@ -982,7 +1027,7 @@ function gen(){
     b+='<div class="br-grid col2">';
     items.slice(0,6).forEach(function(t){
       b+='<div style="display:flex;gap:16px;background:#fff;align-items:flex-start;">';
-      b+='<div style="flex-shrink:0;width:40%;"><div style="position:relative;width:100%;padding-top:133%;background:#ddd;"><span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#bbb;font-size:12px;">{thum}</span></div></div>';
+      b+='<div style="flex-shrink:0;width:40%;">'+thumbWire('133%')+'</div>';
       b+='<div style="flex:1;padding:4px 0;">';
       b+='<div style="font-size:13px;color:#222;line-height:1.6;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">'+t+'</div>';
       b+='<div style="font-size:12px;color:#aaa;margin-bottom:14px;">2020.08.01</div>';
@@ -995,7 +1040,7 @@ function gen(){
     b+='<div class="br-grid col'+brCol+'">';
     items.slice(0,12).forEach(function(t){
       b+='<div style="background:#fff;">';
-      b+='<div style="position:relative;width:100%;padding-top:133%;background:#ddd;"><span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#bbb;font-size:12px;">{thum}</span></div>';
+      b+=thumbWire('133%');
       b+='<div style="padding:12px 0 16px;">';
       b+='<div class="br-card-title">'+t+'</div>';
       b+='<div style="font-size:12px;color:#aaa;margin-bottom:10px;">2020.08.01</div>';
@@ -1031,10 +1076,9 @@ function gen(){
     b+='<div data-edit style="font-size:12px;color:#888;margin-bottom:10px;">전체 251 | 현재페이지 1/26</div>';
     b+='<div style="display:grid;grid-template-columns:repeat('+pgCol+',1fr);gap:14px;">';
     pgItems.slice(0,showCount).forEach(function(p){
-      b+='<div style="background:#fff;border:1px solid #e0e0e0;border-radius:6px;overflow:hidden;">';
-      b+='<div style="position:relative;width:100%;padding-top:75%;background:#ddd;">';
+      b+='<div style="background:#fff;border:1px solid #e0e0e0;border-radius:6px;overflow:hidden;position:relative;">';
+      b+=thumbWire('75%');
       if(h('c-pc-status'))b+='<div class="status-wrap" style="position:absolute;top:8px;left:8px;z-index:10;"><span class="status-badge" onclick="toggleStatus(this)" style="display:inline-block;font-size:11px;padding:3px 8px;border-radius:3px;cursor:pointer;white-space:nowrap;'+(p.s==='모집중'?'background:#1a1a2e;color:#fff;':'background:#aaa;color:#fff;')+'">'+p.s+'</span><div class="status-drop" style="display:none;position:absolute;top:100%;left:0;background:#fff;border:1px solid #e0e0e0;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,0.1);z-index:100;min-width:80px;overflow:hidden;margin-top:4px;"><div class="status-opt" data-label="모집중" data-bg="#1a1a2e" data-color="#fff" style="padding:7px 14px;font-size:12px;color:#1a1a2e;cursor:pointer;">✔ 모집중</div><div class="status-opt" data-label="마감" data-bg="#aaa" data-color="#fff" style="padding:7px 14px;font-size:12px;color:#888;cursor:pointer;border-top:1px solid #f5f5f5;">✕ 마감</div></div></div>';
-      b+='</div>';
       b+='<div style="padding:10px 12px;">';
       b+='<div data-edit style="font-size:13px;font-weight:600;color:#222;margin-bottom:4px;">'+p.t+'</div>';
       if(h('c-pc-date'))b+='<div data-edit style="font-size:12px;color:#aaa;">'+p.p+'</div>';
@@ -1259,7 +1303,7 @@ function gen(){
   var frame=document.getElementById('pf');frame.innerHTML='<iframe id="pif" srcdoc=""></iframe>';
   // 이미지 저장 버튼 표시
   var dlBtn=document.getElementById('btn-download');
-  if(dlBtn)dlBtn.style.display='flex';
+  if(dlBtn)dlBtn.style.display='inline-block';
   var pif=document.getElementById('pif');
   pif.srcdoc=html;
   pif.onload=function(){
