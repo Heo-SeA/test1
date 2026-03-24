@@ -8,7 +8,7 @@
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 html,body{height:100%;margin:0;padding:0;}
 *,*::before,*::after{box-sizing:border-box;}
-body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#ebebea;color:#222;font-size:14px;min-width:700px;display:flex;flex-direction:column;}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#ebebea;color:#222;font-size:14px;min-width:1024px;display:flex;flex-direction:column;}
 .top{padding:13px 18px 8px;flex-shrink:0;}
 .top h1{font-size:15px;font-weight:700;color:#1a1a2e;}
 .top p{font-size:11px;color:#999;margin-top:2px;}
@@ -50,10 +50,10 @@ body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;b
 .empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:300px;color:#c0c0c0;font-size:12px;gap:8px;background:#fff;}
 .empty-icon{font-size:26px;opacity:.45;}
 :root{--krds-primary:#256ef4;--krds-gray-0:#ffffff;--krds-gray-5:#f4f5f6;--krds-gray-10:#e6e8ea;--krds-gray-20:#cdd1d5;--krds-gray-30:#b1b8be;--krds-gray-40:#8a949e;--krds-gray-50:#6d7882;--krds-gray-60:#58616a;--krds-gray-70:#464c53;--krds-gray-80:#33363d;--krds-gray-90:#1e2124;--krds-gray-95:#131416;--krds-radius-sm:0.4rem;--krds-radius-md:0.8rem;}
-.sec-label{font-size:10px;font-weight:700;color:var(--krds-gray-40);letter-spacing:.08em;text-transform:uppercase;margin:14px 0 5px;padding-left:1px;}
-.sec-label:first-child{margin-top:4px;}
-.sub-group-label{font-size:10px;font-weight:600;color:var(--krds-gray-30);padding:5px 2px 4px;margin-bottom:3px;border-bottom:1px solid var(--krds-gray-10);letter-spacing:.02em;}
-.group{margin-bottom:5px;}
+.sec-label{font-size:12px;font-weight:700;color:var(--krds-gray-40);letter-spacing:.06em;text-transform:uppercase;margin:20px 0 10px;padding-left:1px;}
+.sec-label:first-child{margin-top:6px;}
+.sub-group-label{font-size:11px;font-weight:600;color:var(--krds-gray-30);padding:5px 2px 4px;margin-bottom:3px;border-bottom:1px solid var(--krds-gray-10);letter-spacing:.02em;}
+.group{margin-bottom:8px;}
 .item{border:1px solid var(--krds-gray-10);border-radius:var(--krds-radius-md);overflow:hidden;margin-bottom:3px;transition:border-color .15s;}
 .item:hover{border-color:var(--krds-gray-20);}
 .item-hd{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--krds-gray-5);}
@@ -82,6 +82,11 @@ body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;b
 .opt input[type=radio]:checked::after{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:7px;height:7px;border-radius:50%;background:var(--krds-primary);}
 .pf{min-height:600px;}
 .pf iframe{width:100%;min-height:600px;height:100%;border:none;display:block;}
+/* KRDS 인풋 (좌측 패널용 small 사이즈) */
+.panel-input{height:40px;border:1px solid var(--krds-gray-40);border-radius:0.6rem;padding:0 12px;font-size:13px;font-family:inherit;color:var(--krds-gray-90);background:var(--krds-gray-0);outline:none;transition:border-color .15s;box-sizing:border-box;width:100%;}
+.panel-input:focus{border-color:var(--krds-primary);}
+.panel-input::placeholder{color:var(--krds-gray-30);}
+.panel-input.compact{height:36px;font-size:12px;}
 </style>
 </head>
 <body>
@@ -202,7 +207,7 @@ body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;b
             <div class="st" style="margin-top:6px;">기타 (직접 추가)</div>
             <div id="custom-selects"></div>
             <div style="display:flex;gap:5px;margin-top:3px;">
-              <input type="text" id="custom-select-input" placeholder="셀렉트 이름 (예: 연도)" style="flex:1;border:1px solid #e0e0e0;border-radius:5px;padding:5px 8px;font-size:12px;color:#222;">
+              <input type="text" id="custom-select-input" placeholder="셀렉트 이름 (예: 연도)" class="panel-input" style="flex:1;">
               <button onclick="addCustomSelect()" style="background:#1a1a2e;color:#fff;border:none;border-radius:5px;padding:5px 10px;font-size:12px;cursor:pointer;white-space:nowrap;">+ 추가</button>
             </div>
           </div>
@@ -230,7 +235,7 @@ body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;b
             <div class="st" style="margin-top:6px;">기타 (직접 추가)</div>
             <div id="notice-custom-cols"></div>
             <div style="display:flex;gap:5px;margin-top:3px;">
-              <input type="text" id="notice-col-input" placeholder="컬럼명 (예: 조회수)" style="flex:1;border:1px solid #e0e0e0;border-radius:5px;padding:5px 8px;font-size:12px;color:#222;">
+              <input type="text" id="notice-col-input" placeholder="컬럼명 (예: 조회수)" class="panel-input" style="flex:1;">
               <button onclick="addNoticeCol()" style="background:#1a1a2e;color:#fff;border:none;border-radius:5px;padding:5px 10px;font-size:12px;cursor:pointer;white-space:nowrap;">+ 추가</button>
             </div>
           </div>
@@ -255,7 +260,7 @@ body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;b
             <div class="st" style="margin-top:6px;">태그 (직접 추가)</div>
             <div id="photo-tags"></div>
             <div style="display:flex;gap:5px;margin-top:3px;">
-              <input type="text" id="photo-tag-input" placeholder="태그 입력 (예: 행사)" style="flex:1;border:1px solid #e0e0e0;border-radius:5px;padding:5px 8px;font-size:12px;color:#222;">
+              <input type="text" id="photo-tag-input" placeholder="태그 입력 (예: 행사)" class="panel-input" style="flex:1;">
               <button onclick="addPhotoTag()" style="background:#1a1a2e;color:#fff;border:none;border-radius:5px;padding:5px 10px;font-size:12px;cursor:pointer;white-space:nowrap;">+ 추가</button>
             </div>
           </div>
@@ -275,7 +280,7 @@ body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;b
             <div class="st" style="margin-top:6px;">태그 (직접 추가)</div>
             <div id="blog-tags"></div>
             <div style="display:flex;gap:5px;margin-top:3px;">
-              <input type="text" id="blog-tag-input" placeholder="태그 입력 (예: 디자인)" style="flex:1;border:1px solid #e0e0e0;border-radius:5px;padding:5px 8px;font-size:12px;color:#222;">
+              <input type="text" id="blog-tag-input" placeholder="태그 입력 (예: 디자인)" class="panel-input" style="flex:1;">
               <button onclick="addBlogTag()" style="background:#1a1a2e;color:#fff;border:none;border-radius:5px;padding:5px 10px;font-size:12px;cursor:pointer;white-space:nowrap;">+ 추가</button>
             </div>
           </div>
@@ -306,7 +311,7 @@ body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;b
             <div class="st" style="margin-top:6px;">카테고리 목록</div>
             <div id="faq-cat-list"></div>
             <div style="display:flex;gap:5px;margin-top:4px;">
-              <input type="text" id="faq-cat-input" placeholder="카테고리명 (예: 회원)" style="flex:1;border:1px solid #e0e0e0;border-radius:5px;padding:5px 8px;font-size:12px;color:#222;">
+              <input type="text" id="faq-cat-input" placeholder="카테고리명 (예: 회원)" class="panel-input" style="flex:1;">
               <button onclick="addFaqCat()" style="background:#1a1a2e;color:#fff;border:none;border-radius:5px;padding:5px 10px;font-size:12px;cursor:pointer;white-space:nowrap;">+ 추가</button>
             </div>
           </div>
@@ -362,7 +367,7 @@ body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;b
             <div class="st" style="margin-top:6px;">기타 (직접 추가)</div>
             <div id="pglist-custom-cols"></div>
             <div style="display:flex;gap:5px;margin-top:3px;">
-              <input type="text" id="pglist-col-input" placeholder="컬럼명 (예: 담당자)" style="flex:1;border:1px solid #e0e0e0;border-radius:5px;padding:5px 8px;font-size:12px;color:#222;">
+              <input type="text" id="pglist-col-input" placeholder="컬럼명 (예: 담당자)" class="panel-input" style="flex:1;">
               <button onclick="addPglistCol()" style="background:#1a1a2e;color:#fff;border:none;border-radius:5px;padding:5px 10px;font-size:12px;cursor:pointer;white-space:nowrap;">+ 추가</button>
             </div>
           </div>
@@ -529,7 +534,7 @@ function renderLnbInputs(){
     row.style.cssText='display:flex;align-items:center;gap:5px;margin-bottom:4px;';
     row.innerHTML='<span style="font-size:11px;color:#aaa;min-width:14px;text-align:right;">'+(i+1)+'</span>'
       +'<input type="text" data-lnb-idx="'+i+'" value="'+(lnbNames[i]||'메뉴'+(i+1))+'" placeholder="메뉴명" '
-      +'style="flex:1;border:1px solid #e0e0e0;border-radius:5px;padding:4px 7px;font-size:12px;color:#222;" '
+      +'class="panel-input compact" style="flex:1;" '
       +'oninput="lnbNames['+i+']=this.value">';
     wrap.appendChild(row);
   }
@@ -552,7 +557,7 @@ function renderMenuInputs(){
     row.style.cssText='display:flex;align-items:center;gap:5px;margin-bottom:4px;';
     row.innerHTML='<span style="font-size:11px;color:#aaa;min-width:14px;text-align:right;">'+(i+1)+'</span>'
       +'<input type="text" data-menu-idx="'+i+'" value="'+(menuNames[i]||'메뉴'+(i+1))+'" placeholder="메뉴명" '
-      +'style="flex:1;border:1px solid #e0e0e0;border-radius:5px;padding:4px 7px;font-size:12px;color:#222;" '
+      +'class="panel-input compact" style="flex:1;" '
       +'oninput="menuNames['+i+']=this.value">';
     wrap.appendChild(row);
   }
@@ -787,7 +792,7 @@ function gen(){
 
   if(h('c-sv')){var svt=rv('sv');sec.push(svt==='img'?'<div style="position:relative;width:100%;height:160px;background:#f0f0f0;overflow:hidden;box-sizing:border-box;"><svg style="position:absolute;top:0;left:0;width:100%;height:100%;" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="0" x2="100%" y2="100%" stroke="#c8c8c8" stroke-width="1.5"/><line x1="100%" y1="0" x2="0" y2="100%" stroke="#c8c8c8" stroke-width="1.5"/><rect x="1" y="1" width="99%" height="99%" fill="none" stroke="#d0d0d0" stroke-width="1"/></svg><div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="background:#fff;border-radius:6px;padding:6px;box-sizing:border-box;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><p data-edit style="font-size:11px;color:#aaa;margin:0;">'+svBread+'</p><h2 data-edit style="font-size:16px;font-weight:700;color:#666;margin:0;">'+svTitle+'</h2></div></div>':'<div style="background:#f8f8f8;border-bottom:1px solid #eee;padding:16px 24px;"><p data-edit style="font-size:11px;color:#aaa;margin-bottom:4px;">'+svBread+'</p><h2 data-edit style="font-size:18px;font-weight:700;color:#222;">'+svTitle+'</h2></div>');}
   var cs=[];
-  if(h('c-s')){var s='<div style="background:#fff;margin:14px 0;padding:10px 14px;border-radius:6px;border:1px solid #e0e0e0;display:flex;gap:7px;flex-wrap:wrap;align-items:center;">';if(h('c-s-cat'))s+='<select style="border:1px solid #ddd;border-radius:4px;padding:5px 7px;font-size:12px;background:#fff;"><option>카테고리 선택</option><option>공지</option><option>행사</option><option>교육</option></select>';if(h('c-s-type'))s+='<select style="border:1px solid #ddd;border-radius:4px;padding:5px 7px;font-size:12px;background:#fff;"><option>전체</option><option>제목</option><option>내용</option></select>';if(h('c-s-region'))s+='<select style="border:1px solid #ddd;border-radius:4px;padding:5px 7px;font-size:12px;background:#fff;"><option>전체 지역</option><option>서울</option><option>경기</option><option>부산</option></select>';if(h('c-s-date'))s+='<select style="border:1px solid #ddd;border-radius:4px;padding:5px 7px;font-size:12px;background:#fff;"><option>기간 전체</option><option>1개월</option><option>3개월</option></select>';var chkEls=document.querySelectorAll('.custom-chk');customSelects.forEach(function(name,i){if(chkEls[i]&&chkEls[i].checked)s+='<select style="border:1px solid #ddd;border-radius:4px;padding:5px 7px;font-size:12px;background:#fff;"><option>'+name+' 전체</option><option>항목 1</option><option>항목 2</option></select>';});if(h('c-s-box'))s+='<input type="text" placeholder="검색어를 입력해 주세요." style="flex:1;min-width:140px;border:1px solid #ddd;border-radius:4px;padding:5px 9px;font-size:12px;">';s+='<button style="background:#1a1a2e;color:#fff;border:none;border-radius:4px;padding:5px 14px;font-size:12px;cursor:pointer;">검색</button></div>';cs.push(s);}
+  if(h('c-s')){var s='<div style="background:#fff;margin:14px 0;padding:10px 14px;border-radius:6px;border:1px solid #e0e0e0;display:flex;gap:7px;flex-wrap:wrap;align-items:center;">';if(h('c-s-cat'))s+='<select style="border:1px solid #ddd;border-radius:4px;padding:5px 7px;font-size:12px;background:#fff;"><option>카테고리 선택</option><option>공지</option><option>행사</option><option>교육</option></select>';if(h('c-s-type'))s+='<select style="border:1px solid #ddd;border-radius:4px;padding:5px 7px;font-size:12px;background:#fff;"><option>전체</option><option>제목</option><option>내용</option></select>';if(h('c-s-region'))s+='<select style="border:1px solid #ddd;border-radius:4px;padding:5px 7px;font-size:12px;background:#fff;"><option>전체 지역</option><option>서울</option><option>경기</option><option>부산</option></select>';if(h('c-s-date'))s+='<div style=\"display:flex;align-items:center;gap:6px;\"><div style=\"position:relative;display:inline-flex;align-items:center;\"><input type=\"text\" placeholder=\"YYYY-MM-DD\" style=\"width:130px;height:36px;border:1px solid #cdd1d5;border-radius:6px;padding:0 34px 0 10px;font-size:12px;color:#1e2124;background:#fff;outline:none;\"><span style=\"position:absolute;right:9px;pointer-events:none;\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#8a949e\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"4\" width=\"18\" height=\"18\" rx=\"2\"/><line x1=\"16\" y1=\"2\" x2=\"16\" y2=\"6\"/><line x1=\"8\" y1=\"2\" x2=\"8\" y2=\"6\"/><line x1=\"3\" y1=\"10\" x2=\"21\" y2=\"10\"/></svg></span></div><span style=\"font-size:12px;color:#8a949e;\">~</span><div style=\"position:relative;display:inline-flex;align-items:center;\"><input type=\"text\" placeholder=\"YYYY-MM-DD\" style=\"width:130px;height:36px;border:1px solid #cdd1d5;border-radius:6px;padding:0 34px 0 10px;font-size:12px;color:#1e2124;background:#fff;outline:none;\"><span style=\"position:absolute;right:9px;pointer-events:none;\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#8a949e\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"4\" width=\"18\" height=\"18\" rx=\"2\"/><line x1=\"16\" y1=\"2\" x2=\"16\" y2=\"6\"/><line x1=\"8\" y1=\"2\" x2=\"8\" y2=\"6\"/><line x1=\"3\" y1=\"10\" x2=\"21\" y2=\"10\"/></svg></span></div></div>';var chkEls=document.querySelectorAll('.custom-chk');customSelects.forEach(function(name,i){if(chkEls[i]&&chkEls[i].checked)s+='<select style="border:1px solid #ddd;border-radius:4px;padding:5px 7px;font-size:12px;background:#fff;"><option>'+name+' 전체</option><option>항목 1</option><option>항목 2</option></select>';});if(h('c-s-box'))s+='<input type="text" placeholder="검색어를 입력해 주세요." style="flex:1;min-width:140px;border:1px solid #ddd;border-radius:4px;padding:5px 9px;font-size:12px;">';s+='<button style="background:#1a1a2e;color:#fff;border:none;border-radius:4px;padding:5px 14px;font-size:12px;cursor:pointer;">검색</button></div>';cs.push(s);}
   if(bt==='notice'){
     var rows=[
       {no:'',t:'[공지] 서비스 이용약관 개정 안내',cat:'기타안내',d:'2024.05.12',pin:true,attach:true,writer:'관리자',badge:true},
@@ -853,7 +858,7 @@ function gen(){
       b+='<div style="background:#fff;border:1px solid #e0e0e0;border-radius:6px;overflow:hidden;position:relative;">';
       b+=thumbWire('75%');
       if(h('c-ph-badge')&&i<=2)b+='<span style="position:absolute;top:8px;left:8px;background:#1a1a2e;color:#fff;font-size:10px;padding:2px 7px;border-radius:3px;z-index:1;">NEW</span>';
-      b+='<div style="padding:9px 11px;">';
+      b+='<div style="padding:12px 14px;">';
       b+='<div data-edit style="font-size:13px;font-weight:600;color:#222;margin-bottom:5px;">사진 제목 '+i+'</div>';
       b+='<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px;">';
       b+='<span data-edit style="font-size:11px;color:#aaa;">2024.05.12</span>';
@@ -1026,9 +1031,9 @@ function gen(){
   if(brCol==='2'){
     b+='<div class="br-grid col2">';
     items.slice(0,6).forEach(function(t){
-      b+='<div style="display:flex;gap:16px;background:#fff;align-items:flex-start;">';
+      b+='<div style="display:flex;gap:0;background:#fff;align-items:flex-start;border:1px solid #e8e8ea;border-radius:8px;overflow:hidden;">';
       b+='<div style="flex-shrink:0;width:40%;">'+thumbWire('133%')+'</div>';
-      b+='<div style="flex:1;padding:4px 0;">';
+      b+='<div style="flex:1;padding:14px 16px;">';
       b+='<div style="font-size:13px;color:#222;line-height:1.6;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">'+t+'</div>';
       b+='<div style="font-size:12px;color:#aaa;margin-bottom:14px;">2020.08.01</div>';
       b+='<div class="br-btns">'+(h('c-br-dl')?'<button class="br-btn">다운로드</button>':'')+(h('c-br-prev')?'<button class="br-btn">바로보기</button>':'')+'</div>';
@@ -1039,11 +1044,11 @@ function gen(){
     // 4열: 세로 카드 레이아웃
     b+='<div class="br-grid col'+brCol+'">';
     items.slice(0,12).forEach(function(t){
-      b+='<div style="background:#fff;">';
+      b+='<div style="background:#fff;border:1px solid #e8e8ea;border-radius:8px;overflow:hidden;">';
       b+=thumbWire('133%');
-      b+='<div style="padding:12px 0 16px;">';
+      b+='<div style="padding:12px 14px 16px;">';
       b+='<div class="br-card-title">'+t+'</div>';
-      b+='<div style="font-size:12px;color:#aaa;margin-bottom:10px;">2020.08.01</div>';
+      b+='<div style="font-size:12px;color:#aaa;margin-bottom:12px;">2020.08.01</div>';
       b+='<div class="br-btns">'+(h('c-br-dl')?'<button class="br-btn">다운로드</button>':'')+(h('c-br-prev')?'<button class="br-btn">바로보기</button>':'')+'</div>';
       b+='</div></div>';
     });
@@ -1079,7 +1084,7 @@ function gen(){
       b+='<div style="background:#fff;border:1px solid #e0e0e0;border-radius:6px;overflow:hidden;position:relative;">';
       b+=thumbWire('75%');
       if(h('c-pc-status'))b+='<div class="status-wrap" style="position:absolute;top:8px;left:8px;z-index:10;"><span class="status-badge" onclick="toggleStatus(this)" style="display:inline-block;font-size:11px;padding:3px 8px;border-radius:3px;cursor:pointer;white-space:nowrap;'+(p.s==='모집중'?'background:#1a1a2e;color:#fff;':'background:#aaa;color:#fff;')+'">'+p.s+'</span><div class="status-drop" style="display:none;position:absolute;top:100%;left:0;background:#fff;border:1px solid #e0e0e0;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,0.1);z-index:100;min-width:80px;overflow:hidden;margin-top:4px;"><div class="status-opt" data-label="모집중" data-bg="#1a1a2e" data-color="#fff" style="padding:7px 14px;font-size:12px;color:#1a1a2e;cursor:pointer;">✔ 모집중</div><div class="status-opt" data-label="마감" data-bg="#aaa" data-color="#fff" style="padding:7px 14px;font-size:12px;color:#888;cursor:pointer;border-top:1px solid #f5f5f5;">✕ 마감</div></div></div>';
-      b+='<div style="padding:10px 12px;">';
+      b+='<div style="padding:12px 14px;">';
       b+='<div data-edit style="font-size:13px;font-weight:600;color:#222;margin-bottom:4px;">'+p.t+'</div>';
       if(h('c-pc-date'))b+='<div data-edit style="font-size:12px;color:#aaa;">'+p.p+'</div>';
       b+='</div></div>';
